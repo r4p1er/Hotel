@@ -5,5 +5,5 @@ namespace Identity.Application.Exceptions;
 [Serializable]
 public class ConfigurationMissingException : InvalidConfigurationException
 {
-    public ConfigurationMissingException(string message) : base(message){}
+    public ConfigurationMissingException(string message) : base(message) {}
 }
