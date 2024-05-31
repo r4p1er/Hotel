@@ -16,30 +16,12 @@ public class UsersService
     private readonly IUsersRepository _repository;
     private readonly IPasswordHasher _hasher;
     private readonly IConfiguration _configuration;
-    private User? _currentUser;
 
     public UsersService(IUsersRepository repository, IPasswordHasher hasher, IConfiguration configuration)
     {
         _repository = repository;
         _hasher = hasher;
         _configuration = configuration;
-    }
-
-    public async Task SetCurrentUser(Guid id)
-    {
-        var user = await _repository.FindByIdAsync(id);
-
-        _currentUser = user ?? throw new ArgumentException("User id is invalid");
-    }
-
-    private void CheckRight(Right right)
-    {
-        if (_currentUser == null) throw new InvalidOperationException("Current user is not assigned");
-        
-        if (RightPermissionMapper.RightToPermission(_currentUser.Role, right) == Permission.NoAccess || _currentUser.IsBlocked)
-        {
-            throw new PermissionDeniedException();
-        }
     }
     
     public async Task<string?> Login(string email, string password)
@@ -68,20 +50,14 @@ public class UsersService
 
     public async Task<User?> GetById(Guid id)
     {
-        CheckRight(Right.ReadUserById);
-
         return await _repository.FindByIdAsync(id);
-    }
-
-    public User GetSelf()
-    {
-        CheckRight(Right.ReadSelf);
-
-        return _currentUser!;
     }
 
     private async Task Register(RegisterDTO dto, Role role)
     {
+        if (await _repository.FindByEmailAsync(dto.Email) != null)
+            throw new ArgumentException("The email is already used");
+        
         string pepper = _configuration["Auth:Pepper"] ?? string.Empty;
 
         var user = new User()
@@ -107,38 +83,38 @@ public class UsersService
 
     public async Task RegisterManager(RegisterDTO dto)
     {
-        CheckRight(Right.CreateManager);
-
         await Register(dto, Role.Manager);
     }
 
-    public async Task EditSelf(RegisterDTO dto)
+    public async Task EditSelf(Guid id, RegisterDTO dto)
     {
-        CheckRight(Right.UpdateSelf);
+        var user = await _repository.FindByIdAsync(id);
 
-        _currentUser!.Name = dto.Name;
-        _currentUser.Surname = dto.Surname;
-        _currentUser.Patronymic = dto.Patronymic;
-        _currentUser.PhoneNumber = dto.PhoneNumber;
-        _currentUser.Email = dto.Email;
+        if (user == null) throw new ArgumentException("User id is invalid");
+        
+        user.Name = dto.Name;
+        user.Surname = dto.Surname;
+        user.Patronymic = dto.Patronymic;
+        user.PhoneNumber = dto.PhoneNumber;
+        user.Email = dto.Email;
 
-        await _repository.UpdateUserAsync(_currentUser);
+        await _repository.UpdateUserAsync(user);
     }
 
-    public async Task EditPassword(string password)
+    public async Task EditPassword(Guid id, string password)
     {
-        CheckRight(Right.UpdatePassword);
+        var user = await _repository.FindByIdAsync(id);
 
+        if (user == null) throw new ArgumentException("User id is invalid");
+        
         string pepper = _configuration["Auth:Pepper"] ?? string.Empty;
-        _currentUser!.PasswordHash = _hasher.HashPassword(password + pepper);
+        user.PasswordHash = _hasher.HashPassword(password + pepper);
 
-        await _repository.UpdateUserAsync(_currentUser);
+        await _repository.UpdateUserAsync(user);
     }
 
     public async Task ToggleUserBlock(Guid id)
     {
-        CheckRight(Right.BlockUser);
-
         var user = await _repository.FindByIdAsync(id);
         if (user == null) throw new ArgumentException("User id is invalid");
         user.IsBlocked = !user.IsBlocked;
