@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Identity.Application.DTOs;
+using Identity.Application.Enums;
 using Identity.Application.Exceptions;
 using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
@@ -46,6 +47,46 @@ public class UsersService
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public async Task<IEnumerable<User>> GetAll(QueryFiltersDTO filters)
+    {
+        var users = await _repository.FindAllAsync();
+        
+        users = string.IsNullOrEmpty(filters.Search)
+            ? users
+            : users.Where(x => x.Surname.ToLower().Contains(filters.Search.ToLower()) ||
+                               x.Name.ToLower().Contains(filters.Search.ToLower()) ||
+                               (x.Patronymic?.ToLower().Contains(filters.Search.ToLower()) ?? false) ||
+                               x.Email.ToLower().Contains(filters.Search.ToLower()) ||
+                               x.PhoneNumber.ToLower().Contains(filters.Search.ToLower())).ToList();
+        users = filters.Offset == null ? users : users.Skip(filters.Offset.Value).ToList();
+        users = filters.Limit == null ? users : users.Take(filters.Limit.Value).ToList();
+
+        if (!string.IsNullOrWhiteSpace(filters.SortBy) && filters.SortOrder != null)
+        {
+            var prop = typeof(User).GetProperty(filters.SortBy);
+
+            if (prop == null) throw new ArgumentException("Name of prop to order is invalid");
+
+            users = filters.SortOrder == SortOrder.Ascending
+                ? users.OrderBy(x => prop.GetValue(x)).ToList()
+                : users.OrderByDescending(x => prop.GetValue(x)).ToList();
+        }
+        else if (!string.IsNullOrWhiteSpace(filters.SortBy))
+        {
+            var prop = typeof(User).GetProperty(filters.SortBy);
+
+            if (prop == null) throw new ArgumentException("Name of prop to order is invalid");
+
+            users = users.OrderBy(x => prop.GetValue(x)).ToList();
+        }
+        else if (filters.SortOrder != null)
+        {
+            users = filters.SortOrder == SortOrder.Ascending ? users.Order().ToList() : users.OrderDescending().ToList();
+        }
+
+        return users;
     }
 
     public async Task<User?> GetById(Guid id)
