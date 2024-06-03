@@ -1,6 +1,6 @@
 namespace Identity.Application.DTOs;
 
-public class RegisterDTO
+public class RegisterData
 {
     public string Name { get; set; }
     

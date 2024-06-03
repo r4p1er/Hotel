@@ -49,7 +49,7 @@ public class UsersService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public async Task<IEnumerable<User>> GetAll(QueryFiltersDTO filters)
+    public async Task<IEnumerable<User>> GetAll(QueryFiltersData filters)
     {
         var users = await _repository.FindAllAsync();
         
@@ -69,7 +69,7 @@ public class UsersService
 
             if (prop == null) throw new ArgumentException("Name of prop to order is invalid");
 
-            users = filters.SortOrder == SortOrder.Ascending
+            users = filters.SortOrder == SortOrder.Asc
                 ? users.OrderBy(x => prop.GetValue(x)).ToList()
                 : users.OrderByDescending(x => prop.GetValue(x)).ToList();
         }
@@ -83,7 +83,7 @@ public class UsersService
         }
         else if (filters.SortOrder != null)
         {
-            users = filters.SortOrder == SortOrder.Ascending ? users.Order().ToList() : users.OrderDescending().ToList();
+            users = filters.SortOrder == SortOrder.Asc ? users.Order().ToList() : users.OrderDescending().ToList();
         }
 
         return users;
@@ -94,9 +94,9 @@ public class UsersService
         return await _repository.FindByIdAsync(id);
     }
 
-    private async Task Register(RegisterDTO dto, Role role)
+    private async Task Register(RegisterData data, Role role)
     {
-        if (await _repository.FindByEmailAsync(dto.Email) != null)
+        if (await _repository.FindByEmailAsync(data.Email) != null)
             throw new ArgumentException("The email is already used");
         
         string pepper = _configuration["Auth:Pepper"] ?? string.Empty;
@@ -104,12 +104,12 @@ public class UsersService
         var user = new User()
         {
             Id = Guid.NewGuid(),
-            Name = dto.Name,
-            Surname = dto.Surname,
-            Patronymic = dto.Patronymic,
-            PhoneNumber = dto.PhoneNumber,
-            Email = dto.Email,
-            PasswordHash = _hasher.HashPassword(dto.Password + pepper),
+            Name = data.Name,
+            Surname = data.Surname,
+            Patronymic = data.Patronymic,
+            PhoneNumber = data.PhoneNumber,
+            Email = data.Email,
+            PasswordHash = _hasher.HashPassword(data.Password + pepper),
             Role = role,
             IsBlocked = false
         };
@@ -117,27 +117,27 @@ public class UsersService
         await _repository.AddUserAsync(user);
     }
 
-    public async Task RegisterUser(RegisterDTO dto)
+    public async Task RegisterUser(RegisterData data)
     {
-        await Register(dto, Role.User);
+        await Register(data, Role.User);
     }
 
-    public async Task RegisterManager(RegisterDTO dto)
+    public async Task RegisterManager(RegisterData data)
     {
-        await Register(dto, Role.Manager);
+        await Register(data, Role.Manager);
     }
 
-    public async Task EditSelf(Guid id, RegisterDTO dto)
+    public async Task EditSelf(Guid id, RegisterData data)
     {
         var user = await _repository.FindByIdAsync(id);
 
         if (user == null) throw new ArgumentException("User id is invalid");
         
-        user.Name = dto.Name;
-        user.Surname = dto.Surname;
-        user.Patronymic = dto.Patronymic;
-        user.PhoneNumber = dto.PhoneNumber;
-        user.Email = dto.Email;
+        user.Name = data.Name;
+        user.Surname = data.Surname;
+        user.Patronymic = data.Patronymic;
+        user.PhoneNumber = data.PhoneNumber;
+        user.Email = data.Email;
 
         await _repository.UpdateUserAsync(user);
     }

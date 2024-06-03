@@ -2,7 +2,7 @@ using Identity.Application.Enums;
 
 namespace Identity.Application.DTOs;
 
-public class QueryFiltersDTO
+public class QueryFiltersData
 {
     public string? Search { get; set; }
     
