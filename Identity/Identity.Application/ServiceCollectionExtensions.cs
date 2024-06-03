@@ -7,7 +7,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection collection)
     {
-        collection.AddScoped<UsersService>();
+        collection.AddScoped<UserService>();
         
         return collection;
     }

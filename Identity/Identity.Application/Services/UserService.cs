@@ -1,49 +1,41 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Identity.Application.DTOs;
+using Identity.Application.DataObjects;
 using Identity.Application.Enums;
-using Identity.Application.Exceptions;
 using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
 using Identity.Domain.Enums;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Application.Services;
 
-public class UsersService
+public class UserService
 {
     private readonly IUsersRepository _repository;
     private readonly IPasswordHasher _hasher;
-    private readonly IConfiguration _configuration;
+    private readonly UserServiceOptions _options;
 
-    public UsersService(IUsersRepository repository, IPasswordHasher hasher, IConfiguration configuration)
+    public UserService(IUsersRepository repository, IPasswordHasher hasher, UserServiceOptions options)
     {
         _repository = repository;
         _hasher = hasher;
-        _configuration = configuration;
+        _options = options;
     }
     
     public async Task<string?> Login(string email, string password)
     {
-        string pepper = _configuration["Auth:Pepper"] ?? string.Empty;
         var user = await _repository.FindByEmailAsync(email);
         
-        if (user == null || !_hasher.Verify(password + pepper, user.PasswordHash)) return null;
-
-        if (_configuration["Auth:Key"] == null || _configuration["Auth:Expires"] == null)
-        {
-            throw new ConfigurationMissingException("Auth config is missed");
-        }
+        if (user == null || !_hasher.Verify(password + _options.Pepper, user.PasswordHash)) return null;
 
         var signingCredentials =
-            new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:Key"]!)),
+            new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key)),
                 SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(
             signingCredentials: signingCredentials,
-            claims: new List<Claim>() { new Claim("userId", user.Id.ToString()) },
-            expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(_configuration["Auth:Expires"]))
+            claims: new List<Claim>() { new Claim("id", user.Id.ToString()) },
+            expires: DateTime.UtcNow.AddMinutes(_options.Expires)
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
@@ -98,8 +90,6 @@ public class UsersService
     {
         if (await _repository.FindByEmailAsync(data.Email) != null)
             throw new ArgumentException("The email is already used");
-        
-        string pepper = _configuration["Auth:Pepper"] ?? string.Empty;
 
         var user = new User()
         {
@@ -109,7 +99,7 @@ public class UsersService
             Patronymic = data.Patronymic,
             PhoneNumber = data.PhoneNumber,
             Email = data.Email,
-            PasswordHash = _hasher.HashPassword(data.Password + pepper),
+            PasswordHash = _hasher.HashPassword(data.Password + _options.Pepper),
             Role = role,
             IsBlocked = false
         };
@@ -131,7 +121,7 @@ public class UsersService
     {
         var user = await _repository.FindByIdAsync(id);
 
-        if (user == null) throw new ArgumentException("User id is invalid");
+        if (user == null) throw new ArgumentException("User not found");
         
         user.Name = data.Name;
         user.Surname = data.Surname;
@@ -146,10 +136,9 @@ public class UsersService
     {
         var user = await _repository.FindByIdAsync(id);
 
-        if (user == null) throw new ArgumentException("User id is invalid");
+        if (user == null) throw new ArgumentException("User not found");
         
-        string pepper = _configuration["Auth:Pepper"] ?? string.Empty;
-        user.PasswordHash = _hasher.HashPassword(password + pepper);
+        user.PasswordHash = _hasher.HashPassword(password + _options.Pepper);
 
         await _repository.UpdateUserAsync(user);
     }
@@ -157,7 +146,7 @@ public class UsersService
     public async Task ToggleUserBlock(Guid id)
     {
         var user = await _repository.FindByIdAsync(id);
-        if (user == null) throw new ArgumentException("User id is invalid");
+        if (user == null) throw new ArgumentException("User not found");
         user.IsBlocked = !user.IsBlocked;
 
         await _repository.UpdateUserAsync(user);
