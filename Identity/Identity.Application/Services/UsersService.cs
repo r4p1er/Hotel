@@ -57,11 +57,11 @@ public class UsersService
             ? users
             : users.Where(x => x.Surname.ToLower().Contains(filters.Search.ToLower()) ||
                                x.Name.ToLower().Contains(filters.Search.ToLower()) ||
-                               (x.Patronymic?.ToLower().Contains(filters.Search.ToLower()) ?? false) ||
+                               (x.Patronymic != null && x.Patronymic.ToLower().Contains(filters.Search.ToLower())) ||
                                x.Email.ToLower().Contains(filters.Search.ToLower()) ||
-                               x.PhoneNumber.ToLower().Contains(filters.Search.ToLower())).ToList();
-        users = filters.Offset == null ? users : users.Skip(filters.Offset.Value).ToList();
-        users = filters.Limit == null ? users : users.Take(filters.Limit.Value).ToList();
+                               x.PhoneNumber.ToLower().Contains(filters.Search.ToLower()));
+        users = filters.Offset == null ? users : users.Skip(filters.Offset.Value);
+        users = filters.Limit == null ? users : users.Take(filters.Limit.Value);
 
         if (!string.IsNullOrWhiteSpace(filters.SortBy) && filters.SortOrder != null)
         {
@@ -70,8 +70,8 @@ public class UsersService
             if (prop == null) throw new ArgumentException("Name of prop to order is invalid");
 
             users = filters.SortOrder == SortOrder.Asc
-                ? users.OrderBy(x => prop.GetValue(x)).ToList()
-                : users.OrderByDescending(x => prop.GetValue(x)).ToList();
+                ? users.OrderBy(x => prop.GetValue(x))
+                : users.OrderByDescending(x => prop.GetValue(x));
         }
         else if (!string.IsNullOrWhiteSpace(filters.SortBy))
         {
@@ -79,14 +79,14 @@ public class UsersService
 
             if (prop == null) throw new ArgumentException("Name of prop to order is invalid");
 
-            users = users.OrderBy(x => prop.GetValue(x)).ToList();
+            users = users.OrderBy(x => prop.GetValue(x));
         }
         else if (filters.SortOrder != null)
         {
-            users = filters.SortOrder == SortOrder.Asc ? users.Order().ToList() : users.OrderDescending().ToList();
+            users = filters.SortOrder == SortOrder.Asc ? users.Order() : users.OrderDescending();
         }
 
-        return users;
+        return users.ToList();
     }
 
     public async Task<User?> GetById(Guid id)
