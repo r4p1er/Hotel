@@ -1,3 +1,4 @@
+using Identity.Application.Interfaces;
 using Identity.Infrastructure.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,8 +9,15 @@ public class ApplicationContext : DbContext
     public DbSet<Role> Roles { get; set; }
     
     public DbSet<User> Users { get; set; }
-    
-    public ApplicationContext(DatabaseOptions options) : base(options.Options) {}
+
+    private readonly IPasswordHasher _hasher;
+    private readonly DatabaseOptions _options;
+
+    public ApplicationContext(DatabaseOptions options, IPasswordHasher hasher) : base(options.Options)
+    {
+        _hasher = hasher;
+        _options = options;
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,13 +34,16 @@ public class ApplicationContext : DbContext
             new User()
             {
                 Id = Guid.NewGuid(), Name = "Александр", Surname = "Цыганок", Patronymic = "Михайлович",
-                Email = "tsyganok2015@gmail.com", PhoneNumber = "88005553535", PasswordHash = "*", RoleId = 3,
+                Email = "tsyganok2015@gmail.com", PhoneNumber = "88005553535",
+                PasswordHash = _hasher.HashPassword(_options.AdminPassword + _options.Pepper), RoleId = 3,
                 IsBlocked = false
             },
             new User()
             {
                 Id = Guid.NewGuid(), Name = "Service", Surname = "Service", Patronymic = "Service", Email = "Service",
-                PhoneNumber = "Service", PasswordHash = "*", RoleId = 4, IsBlocked = false
+                PhoneNumber = "Service",
+                PasswordHash = _hasher.HashPassword(_options.ServicePassword + _options.Pepper),
+                RoleId = 4, IsBlocked = false
             }
         });
     }

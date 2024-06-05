@@ -9,4 +9,6 @@ public class DatabaseOptions
     public string AdminPassword { get; set; }
     
     public string ServicePassword { get; set; }
+    
+    public string Pepper { get; set; }
 }

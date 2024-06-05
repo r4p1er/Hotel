@@ -41,9 +41,9 @@ public class UserService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public async Task<IEnumerable<User>> GetAll(QueryFiltersData filters)
+    public IEnumerable<User> GetAll(QueryFiltersData filters)
     {
-        var users = await _repository.FindAllAsync();
+        var users = _repository.FindAll();
         
         users = string.IsNullOrEmpty(filters.Search)
             ? users

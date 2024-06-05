@@ -1,3 +1,4 @@
+using Identity.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -18,8 +19,9 @@ public class ApplicationContextFactory : IDesignTimeDbContextFactory<Application
         return new ApplicationContext(new DatabaseOptions()
         {
             Options = optionsBuilder.Options,
-            AdminPassword = config["Database:AdminPassword"]!,
-            ServicePassword = config["Database:ServicePassword"]!
-        });
+            AdminPassword = config["Auth:AdminPassword"]!,
+            ServicePassword = config["Auth:ServicePassword"]!,
+            Pepper = config["Auth:Pepper"]!
+        }, new PasswordHasher());
     }
 }
