@@ -1,4 +1,5 @@
-using Identity.Application.Interfaces;
+using Identity.Domain.Entities;
+using Identity.Domain.Interfaces;
 using Identity.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,13 +7,6 @@ namespace Identity.Infrastructure.Services;
 
 public class UsersRepository : IUsersRepository
 {
-    private readonly Dictionary<int, Domain.Enums.Role> _databaseDomainRoleMap = new Dictionary<int, Domain.Enums.Role>()
-    {
-        { 1, Domain.Enums.Role.User },
-        { 2, Domain.Enums.Role.Manager },
-        { 3, Domain.Enums.Role.Admin },
-        { 4, Domain.Enums.Role.Service }
-    };
     private readonly ApplicationContext _context;
     
     public UsersRepository(ApplicationContext context)
@@ -20,70 +14,32 @@ public class UsersRepository : IUsersRepository
         _context = context;
     }
     
-    public async Task<Domain.Entities.User?> FindByEmailAsync(string email)
+    public async Task<User?> FindByEmailAsync(string email)
     {
-        return DbUserToDomainUser(await _context.Users.FirstOrDefaultAsync(x => x.Email == email));
+        return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
     }
 
-    public async Task<Domain.Entities.User?> FindByIdAsync(Guid id)
+    public async Task<User?> FindByIdAsync(Guid id)
     {
-        return DbUserToDomainUser(await _context.Users.FirstOrDefaultAsync(x => x.Id == id));
+        return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public IQueryable<Domain.Entities.User> FindAll()
+    public IQueryable<User> FindAll()
     {
-        return _context.Users.Select(x => DbUserToDomainUser(x)!);
+        return _context.Users;
     }
 
-    public async Task AddUserAsync(Domain.Entities.User user)
+    public async Task AddUserAsync(User user)
     {
-        var dbUser = DomainUserToDbUser(user);
-        await _context.AddAsync(dbUser!);
+        await _context.AddAsync(user);
 
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateUserAsync(Domain.Entities.User user)
+    public async Task UpdateUserAsync(User user)
     {
-        var dbUser = DomainUserToDbUser(user);
-        _context.Entry(dbUser!).State = EntityState.Modified;
+        _context.Entry(user).State = EntityState.Modified;
 
         await _context.SaveChangesAsync();
-    }
-
-    private Domain.Entities.User? DbUserToDomainUser(Database.Entities.User? user)
-    {
-        return user == null
-            ? null
-            : new Domain.Entities.User()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Surname = user.Surname,
-                Patronymic = user.Patronymic,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                PasswordHash = user.PasswordHash,
-                Role = _databaseDomainRoleMap[user.RoleId],
-                IsBlocked = user.IsBlocked
-            };
-    }
-
-    private Database.Entities.User? DomainUserToDbUser(Domain.Entities.User? user)
-    {
-        return user == null
-            ? null
-            : new Database.Entities.User()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Surname = user.Surname,
-                Patronymic = user.Patronymic,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                PasswordHash = user.PasswordHash,
-                RoleId = _databaseDomainRoleMap.First(x => x.Value == user.Role).Key,
-                IsBlocked = user.IsBlocked
-            };
     }
 }

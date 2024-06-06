@@ -1,14 +1,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Identity.Application.DataObjects;
-using Identity.Application.Enums;
-using Identity.Application.Interfaces;
+using Identity.Domain.DataObjects;
 using Identity.Domain.Entities;
 using Identity.Domain.Enums;
+using Identity.Domain.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Identity.Application.Services;
+namespace Identity.Domain.Services;
 
 public class UserService
 {

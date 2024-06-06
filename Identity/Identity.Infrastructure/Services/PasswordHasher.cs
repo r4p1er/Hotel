@@ -1,4 +1,4 @@
-using Identity.Application.Interfaces;
+using Identity.Domain.Interfaces;
 
 namespace Identity.Infrastructure.Services;
 
