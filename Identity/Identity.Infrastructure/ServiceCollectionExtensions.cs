@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection collection)
     {
         collection.AddSingleton<IPasswordHasher, PasswordHasher>();
-        collection.AddScoped<ApplicationContext>();
+        collection.AddDbContext<ApplicationContext>();
         collection.AddScoped<IUsersRepository, UsersRepository>();
 
         return collection;
