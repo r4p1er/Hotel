@@ -1,4 +1,3 @@
-using Identity.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -16,12 +15,6 @@ public class ApplicationContextFactory : IDesignTimeDbContextFactory<Application
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
         optionsBuilder.UseNpgsql(config["Connection:Default"]);
 
-        return new ApplicationContext(new DatabaseOptions()
-        {
-            Options = optionsBuilder.Options,
-            AdminPassword = config["Auth:AdminPassword"]!,
-            ServicePassword = config["Auth:ServicePassword"]!,
-            Pepper = config["Auth:Pepper"]!
-        }, new PasswordHasher());
+        return new ApplicationContext(optionsBuilder.Options);
     }
 }
