@@ -1,4 +1,4 @@
-namespace Identity.Application.DataObjects;
+namespace Identity.Domain.DataObjects;
 
 public class UserServiceOptions
 {

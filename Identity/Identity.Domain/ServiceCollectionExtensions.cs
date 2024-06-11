@@ -1,11 +1,11 @@
-using Identity.Application.Services;
+using Identity.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Identity.Application;
+namespace Identity.Domain;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddApplication(this IServiceCollection collection)
+    public static IServiceCollection AddDomain(this IServiceCollection collection)
     {
         collection.AddScoped<UserService>();
         

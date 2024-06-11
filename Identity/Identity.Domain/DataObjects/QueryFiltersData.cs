@@ -1,6 +1,6 @@
-using Identity.Application.Enums;
+using Identity.Domain.Enums;
 
-namespace Identity.Application.DataObjects;
+namespace Identity.Domain.DataObjects;
 
 public class QueryFiltersData
 {

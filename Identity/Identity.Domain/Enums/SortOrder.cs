@@ -1,4 +1,4 @@
-namespace Identity.Application.Enums;
+namespace Identity.Domain.Enums;
 
 public enum SortOrder
 {

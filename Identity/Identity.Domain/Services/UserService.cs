@@ -1,25 +1,23 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Identity.Application.DataObjects;
-using Identity.Application.Enums;
-using Identity.Application.Interfaces;
+using Identity.Domain.DataObjects;
 using Identity.Domain.Entities;
 using Identity.Domain.Enums;
+using Identity.Domain.Interfaces;
+using Identity.Domain.Utils;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Identity.Application.Services;
+namespace Identity.Domain.Services;
 
 public class UserService
 {
     private readonly IUsersRepository _repository;
-    private readonly IPasswordHasher _hasher;
     private readonly UserServiceOptions _options;
 
-    public UserService(IUsersRepository repository, IPasswordHasher hasher, UserServiceOptions options)
+    public UserService(IUsersRepository repository, UserServiceOptions options)
     {
         _repository = repository;
-        _hasher = hasher;
         _options = options;
     }
     
@@ -27,7 +25,7 @@ public class UserService
     {
         var user = await _repository.FindByEmailAsync(email);
         
-        if (user == null || !_hasher.Verify(password + _options.Pepper, user.PasswordHash)) return null;
+        if (user == null || !PasswordHasher.Verify(password + _options.Pepper, user.PasswordHash)) return null;
 
         var signingCredentials =
             new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key)),
@@ -41,9 +39,9 @@ public class UserService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public async Task<IEnumerable<User>> GetAll(QueryFiltersData filters)
+    public IEnumerable<User> GetAll(QueryFiltersData filters)
     {
-        var users = await _repository.FindAllAsync();
+        var users = _repository.FindAll();
         
         users = string.IsNullOrEmpty(filters.Search)
             ? users
@@ -99,7 +97,7 @@ public class UserService
             Patronymic = data.Patronymic,
             PhoneNumber = data.PhoneNumber,
             Email = data.Email,
-            PasswordHash = _hasher.HashPassword(data.Password + _options.Pepper),
+            PasswordHash = PasswordHasher.HashPassword(data.Password + _options.Pepper),
             Role = role,
             IsBlocked = false
         };
@@ -138,7 +136,7 @@ public class UserService
 
         if (user == null) throw new ArgumentException("User not found");
         
-        user.PasswordHash = _hasher.HashPassword(password + _options.Pepper);
+        user.PasswordHash = PasswordHasher.HashPassword(password + _options.Pepper);
 
         await _repository.UpdateUserAsync(user);
     }
