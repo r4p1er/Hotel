@@ -11,7 +11,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection collection, string connection)
     {
-        collection.AddSingleton<IPasswordHasher, PasswordHasher>();
         collection.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connection));
         collection.AddScoped<IUsersRepository, UsersRepository>();
         collection.AddScoped<IDataSeeder, DataSeeder>();
