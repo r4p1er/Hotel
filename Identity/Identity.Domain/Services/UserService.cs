@@ -32,7 +32,11 @@ public class UserService
                 SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(
             signingCredentials: signingCredentials,
-            claims: new List<Claim>() { new Claim("id", user.Id.ToString()) },
+            claims: new List<Claim>()
+            {
+                new Claim("id", user.Id.ToString()),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.ToString())
+            },
             expires: DateTime.UtcNow.AddMinutes(_options.Expires)
         );
 
