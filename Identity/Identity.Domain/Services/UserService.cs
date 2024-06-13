@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
 using Identity.Domain.DataObjects;
@@ -43,6 +44,21 @@ public class UserService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
+    private Expression<Func<User, object>> CreateSortingExpression(string propName)
+    {
+        var prop = typeof(User).GetProperty(propName);
+
+        if (prop == null)
+            throw new ArgumentException(
+                "Name of prop to order is invalid. Consider write a name with a first letter being capital");
+        
+        var param = Expression.Parameter(typeof(User), "x");
+        var accessingProp = Expression.MakeMemberAccess(param, prop);
+        var lambdaResult = Expression.Convert(accessingProp, typeof(object));
+
+        return Expression.Lambda<Func<User, object>>(lambdaResult, param);
+    }
+    
     public IEnumerable<User> GetAll(QueryFiltersData filters)
     {
         var users = _repository.FindAll();
@@ -59,25 +75,23 @@ public class UserService
 
         if (!string.IsNullOrWhiteSpace(filters.SortBy) && filters.SortOrder != null)
         {
-            var prop = typeof(User).GetProperty(filters.SortBy);
-
-            if (prop == null) throw new ArgumentException("Name of prop to order is invalid");
+            var exp = CreateSortingExpression(filters.SortBy);
 
             users = filters.SortOrder == SortOrder.Asc
-                ? users.OrderBy(x => prop.GetValue(x))
-                : users.OrderByDescending(x => prop.GetValue(x));
+                ? users.OrderBy(exp)
+                : users.OrderByDescending(exp);
         }
         else if (!string.IsNullOrWhiteSpace(filters.SortBy))
         {
-            var prop = typeof(User).GetProperty(filters.SortBy);
-
-            if (prop == null) throw new ArgumentException("Name of prop to order is invalid");
-
-            users = users.OrderBy(x => prop.GetValue(x));
+            var exp = CreateSortingExpression(filters.SortBy);
+            
+            users = users.OrderBy(exp);
         }
         else if (filters.SortOrder != null)
         {
-            users = filters.SortOrder == SortOrder.Asc ? users.Order() : users.OrderDescending();
+            users = filters.SortOrder == SortOrder.Asc
+                ? users.OrderBy(x => x.Id)
+                : users.OrderByDescending(x => x.Id);
         }
 
         return users.ToList();
