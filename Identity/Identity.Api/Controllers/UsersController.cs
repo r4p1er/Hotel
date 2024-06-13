@@ -29,7 +29,14 @@ public class UsersController : ControllerBase
     [Authorize(Roles = "Admin, Service")]
     public IResult Search([FromQuery]QueryFiltersData filters)
     {
-        return Results.Json(_userService.GetAll(filters));
+        try
+        {
+            return Results.Json(_userService.GetAll(filters));
+        }
+        catch (ArgumentException e)
+        {
+            return Results.BadRequest(new { Error = e.Message });
+        }
     }
 
     [HttpGet("{id}")]
@@ -85,12 +92,19 @@ public class UsersController : ControllerBase
         return Results.NoContent();
     }
 
-    [HttpPut("block/{id}")]
+    [HttpPut("{id}/block")]
     [Authorize(Roles = "Admin")]
     public async Task<IResult> ToggleUserBlock(Guid id)
     {
-        await _userService.ToggleUserBlock(id);
+        try
+        {
+            await _userService.ToggleUserBlock(id);
 
-        return Results.NoContent();
+            return Results.NoContent();
+        }
+        catch (ArgumentException e)
+        {
+            return Results.NotFound(new { Error = e.Message });
+        }
     }
 }

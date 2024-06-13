@@ -61,7 +61,7 @@ public class UserService
     
     public IEnumerable<User> GetAll(QueryFiltersData filters)
     {
-        var users = _repository.FindAll();
+        var users = _repository.FindAll().Where(x => x.Role != Role.Service);
         
         users = string.IsNullOrEmpty(filters.Search)
             ? users
@@ -99,7 +99,9 @@ public class UserService
 
     public async Task<User?> GetById(Guid id)
     {
-        return await _repository.FindByIdAsync(id);
+        var user = await _repository.FindByIdAsync(id);
+
+        return (user?.Role == Role.Service ? null : user) ?? null;
     }
 
     private async Task Register(RegisterData data, Role role)
@@ -162,7 +164,7 @@ public class UserService
     public async Task ToggleUserBlock(Guid id)
     {
         var user = await _repository.FindByIdAsync(id);
-        if (user == null) throw new ArgumentException("User not found");
+        if (user == null || user.Role == Role.Service) throw new ArgumentException("User not found");
         user.IsBlocked = !user.IsBlocked;
 
         await _repository.UpdateUserAsync(user);
