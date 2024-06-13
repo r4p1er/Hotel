@@ -1,4 +1,6 @@
+using Identity.Infrastructure.Database;
 using Identity.Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -14,6 +16,19 @@ public static class HostExtensions
 
             var dataSeeder = services.GetRequiredService<IDataSeeder>();
             await dataSeeder.SeedAsync();
+        }
+
+        return host;
+    }
+
+    public static async Task<IHost> MigrateDatabaseAsync(this IHost host)
+    {
+        using (var scope = host.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+
+            var context = services.GetRequiredService<ApplicationContext>();
+            await context.Database.MigrateAsync();
         }
 
         return host;
