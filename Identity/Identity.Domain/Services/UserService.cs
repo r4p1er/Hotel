@@ -5,6 +5,7 @@ using System.Text;
 using Identity.Domain.DataObjects;
 using Identity.Domain.Entities;
 using Identity.Domain.Enums;
+using Identity.Domain.Exceptions;
 using Identity.Domain.Interfaces;
 using Identity.Domain.Utils;
 using Microsoft.IdentityModel.Tokens;
@@ -49,7 +50,7 @@ public class UserService
         var prop = typeof(User).GetProperty(propName);
 
         if (prop == null)
-            throw new ArgumentException(
+            throw new BadRequestException(
                 "Name of prop to order is invalid. Consider write a name with a first letter being capital");
         
         var param = Expression.Parameter(typeof(User), "x");
@@ -107,7 +108,7 @@ public class UserService
     private async Task<User> Register(RegisterData data, Role role)
     {
         if (await _repository.FindByEmailAsync(data.Email) != null)
-            throw new ArgumentException("The email is already used");
+            throw new BadRequestException("The email is already used");
 
         var user = new User()
         {
@@ -141,7 +142,7 @@ public class UserService
     {
         var user = await _repository.FindByIdAsync(id);
 
-        if (user == null) throw new ArgumentException("User not found");
+        if (user == null) throw new NotFoundException("User not found");
         
         user.Name = data.Name;
         user.Surname = data.Surname;
@@ -156,7 +157,7 @@ public class UserService
     {
         var user = await _repository.FindByIdAsync(id);
 
-        if (user == null) throw new ArgumentException("User not found");
+        if (user == null) throw new NotFoundException("User not found");
         
         user.PasswordHash = PasswordHasher.HashPassword(password + _options.Pepper);
 
@@ -166,7 +167,7 @@ public class UserService
     public async Task ToggleUserBlock(Guid id)
     {
         var user = await _repository.FindByIdAsync(id);
-        if (user == null || user.Role == Role.Service) throw new ArgumentException("User not found");
+        if (user == null || user.Role == Role.Service) throw new NotFoundException("User not found");
         user.IsBlocked = !user.IsBlocked;
 
         await _repository.UpdateUserAsync(user);

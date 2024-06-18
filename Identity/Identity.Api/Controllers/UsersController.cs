@@ -30,14 +30,7 @@ public class UsersController : ControllerBase
     [Authorize(Roles = "Admin, Service")]
     public ActionResult<IEnumerable<User>> Search([FromQuery]QueryFiltersData filters)
     {
-        try
-        {
-            return _userService.GetAll(filters).ToList();
-        }
-        catch (ArgumentException e)
-        {
-            return BadRequest(new { Error = e.Message });
-        }
+        return _userService.GetAll(filters).ToList();
     }
 
     [HttpGet("{id}")]
@@ -87,7 +80,7 @@ public class UsersController : ControllerBase
         return NoContent();
     }
 
-    [HttpPatch("self/password")]
+    [HttpPatch("me/password")]
     [Authorize(Roles = "User, Manager, Admin")]
     public async Task<IActionResult> EditSelfPassword([FromHeader]string password)
     {
@@ -101,15 +94,8 @@ public class UsersController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> ToggleUserBlock(Guid id)
     {
-        try
-        {
-            await _userService.ToggleUserBlock(id);
+        await _userService.ToggleUserBlock(id);
 
-            return NoContent();
-        }
-        catch (ArgumentException e)
-        {
-            return NotFound(new { Error = e.Message });
-        }
+        return NoContent();
     }
 }

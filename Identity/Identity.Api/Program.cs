@@ -1,4 +1,5 @@
 using System.Text;
+using Identity.Api.Middlewares;
 using Identity.Domain;
 using Identity.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -66,6 +67,8 @@ public class Program
         builder.Services.AddInfrastructure(builder.Configuration["Connection:Default"]!);
 
         var app = builder.Build();
+
+        app.UseMiddleware<ErrorHandlingMiddleware>();
         
         if (app.Environment.IsDevelopment())
         {
