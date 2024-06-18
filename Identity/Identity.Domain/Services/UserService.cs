@@ -104,7 +104,7 @@ public class UserService
         return (user?.Role == Role.Service ? null : user) ?? null;
     }
 
-    private async Task Register(RegisterData data, Role role)
+    private async Task<User> Register(RegisterData data, Role role)
     {
         if (await _repository.FindByEmailAsync(data.Email) != null)
             throw new ArgumentException("The email is already used");
@@ -123,16 +123,18 @@ public class UserService
         };
 
         await _repository.AddUserAsync(user);
+
+        return user;
     }
 
-    public async Task RegisterUser(RegisterData data)
+    public async Task<User> RegisterUser(RegisterData data)
     {
-        await Register(data, Role.User);
+        return await Register(data, Role.User);
     }
 
-    public async Task RegisterManager(RegisterData data)
+    public async Task<User> RegisterManager(RegisterData data)
     {
-        await Register(data, Role.Manager);
+        return await Register(data, Role.Manager);
     }
 
     public async Task EditSelf(Guid id, RegisterData data)

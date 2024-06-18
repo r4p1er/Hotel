@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Identity.Domain.DataObjects;
+using Identity.Domain.Entities;
 using Identity.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,93 +19,97 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("login")]
-    public async Task<IResult> Login(string email, [FromHeader]string password)
+    public async Task<IActionResult> Login(string email, [FromHeader]string password)
     {
         var token = await _userService.Login(email, password);
 
-        return token == null ? Results.NotFound() : Results.Ok(new { Token = token });
+        return token == null ? NotFound() : Ok(new { Token = token });
     }
 
     [HttpGet]
     [Authorize(Roles = "Admin, Service")]
-    public IResult Search([FromQuery]QueryFiltersData filters)
+    public ActionResult<IEnumerable<User>> Search([FromQuery]QueryFiltersData filters)
     {
         try
         {
-            return Results.Json(_userService.GetAll(filters));
+            return _userService.GetAll(filters).ToList();
         }
         catch (ArgumentException e)
         {
-            return Results.BadRequest(new { Error = e.Message });
+            return BadRequest(new { Error = e.Message });
         }
     }
 
     [HttpGet("{id}")]
     [Authorize(Roles = "Admin, Service")]
-    public async Task<IResult> GetById(Guid id)
+    public async Task<ActionResult<User>> GetById(Guid id)
     {
         var user = await _userService.GetById(id);
 
-        return user == null ? Results.NotFound() : Results.Json(user);
+        return user == null ? NotFound() : user;
     }
 
     [HttpGet("self")]
     [Authorize(Roles = "User, Manager, Admin")]
-    public async Task<IResult> GetSelf()
+    public async Task<ActionResult<User>> GetSelf()
     {
-        return Results.Json(await _userService.GetById(Guid.Parse(User.FindFirstValue("id")!)));
+        var user = await _userService.GetById(Guid.Parse(User.FindFirstValue("id")!));
+
+        if (user == null) return NotFound();
+
+        return user;
     }
 
     [HttpPost]
-    public async Task<IResult> RegisterUser(RegisterData data)
+    public async Task<ActionResult<User>> RegisterUser(RegisterData data)
     {
-        await _userService.RegisterUser(data);
+        var user = await _userService.RegisterUser(data);
 
-        return Results.Created();
+        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
     }
 
     [HttpPost("managers")]
     [Authorize(Roles = "Admin")]
-    public async Task<IResult> RegisterManager(RegisterData data)
+    public async Task<ActionResult<User>> RegisterManager(RegisterData data)
     {
-        await _userService.RegisterManager(data);
+        var user = await _userService.RegisterManager(data);
 
-        return Results.Created();
+        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
     }
 
-    [HttpPut("self")]
+    [HttpPatch("me")]
     [Authorize(Roles = "User, Manager, Admin")]
-    public async Task<IResult> EditSelf(RegisterData data)
+    public async Task<IActionResult> EditSelf(RegisterData data)
     {
         var id = Guid.Parse(User.FindFirstValue("id")!);
         await _userService.EditSelf(id, data);
 
-        return Results.NoContent();
+        return NoContent();
     }
 
-    [HttpPut("self/password")]
+    [HttpPatch("self/password")]
     [Authorize(Roles = "User, Manager, Admin")]
-    public async Task<IResult> EditSelfPassword([FromHeader]string password)
+    public async Task<IActionResult> EditSelfPassword([FromHeader]string password)
     {
         var id = Guid.Parse(User.FindFirstValue("id")!);
         await _userService.EditPassword(id, password);
 
-        return Results.NoContent();
+        return NoContent();
     }
 
-    [HttpPut("{id}/block")]
+    [HttpPatch("{id}/block")]
     [Authorize(Roles = "Admin")]
-    public async Task<IResult> ToggleUserBlock(Guid id)
+    public async Task<IActionResult> ToggleUserBlock(Guid id)
     {
         try
         {
             await _userService.ToggleUserBlock(id);
 
-            return Results.NoContent();
+            return NoContent();
         }
         catch (ArgumentException e)
         {
-            return Results.NotFound(new { Error = e.Message });
+            return NotFound(new { Error = e.Message });
         }
     }
 }
