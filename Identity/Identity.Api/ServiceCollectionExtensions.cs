@@ -5,21 +5,13 @@ namespace Identity.Api;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddServicesOptions(this IServiceCollection collection)
+    public static IServiceCollection AddServicesOptions(this IServiceCollection collection, IConfiguration configuration)
     {
         collection.AddSingleton<UserServiceOptions>(provider =>
-        {
-            var configuration = provider.GetRequiredService<IConfiguration>();
-
-            return configuration.GetRequiredSection("Auth").Get<UserServiceOptions>()!;
-        });
+            configuration.GetRequiredSection("Auth").Get<UserServiceOptions>()!);
 
         collection.AddSingleton<DataSeederOptions>(provider =>
-        {
-            var configuration = provider.GetRequiredService<IConfiguration>();
-            
-            return configuration.GetRequiredSection("Seeding").Get<DataSeederOptions>()!;
-        });
+            configuration.GetRequiredSection("Seeding").Get<DataSeederOptions>()!);
 
         return collection;
     }
