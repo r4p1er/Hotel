@@ -39,8 +39,7 @@ public class RoomService
             ? rooms
             : rooms.Where(x =>
                 x.Summary.ToLower().Contains(filters.Search.ToLower()) ||
-                x.Description.ToLower().Contains(filters.Search.ToLower()) ||
-                x.Price.ToString("G").StartsWith(filters.Search));
+                x.Description.ToLower().Contains(filters.Search.ToLower()));
         rooms = filters.Offset == null ? rooms : rooms.Skip(filters.Offset.Value);
         rooms = filters.Limit == null ? rooms : rooms.Take(filters.Limit.Value);
 

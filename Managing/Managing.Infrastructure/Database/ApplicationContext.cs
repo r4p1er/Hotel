@@ -11,6 +11,6 @@ public class ApplicationContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Room>().ToTable(t => t.HasCheckConstraint("ValidPrice", "Price > 0"));
+        modelBuilder.Entity<Room>().ToTable(t => t.HasCheckConstraint("ValidPrice", "\"Price\" > 0"));
     }
 }
