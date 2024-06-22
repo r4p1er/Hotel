@@ -1,6 +1,6 @@
-using Identity.Domain.Exceptions;
+using Managing.Domain.Exceptions;
 
-namespace Identity.Api.Middlewares;
+namespace Managing.Api.Middlewares;
 
 public class ErrorHandlingMiddleware
 {
@@ -10,7 +10,7 @@ public class ErrorHandlingMiddleware
     {
         _next = next;
     }
-
+    
     public async Task InvokeAsync(HttpContext context)
     {
         try

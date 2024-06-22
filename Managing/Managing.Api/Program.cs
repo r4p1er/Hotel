@@ -1,6 +1,6 @@
-using Identity.Infrastructure;
+using Managing.Infrastructure;
 
-namespace Identity.Api;
+namespace Managing.Api;
 
 public class Program
 {
@@ -8,7 +8,6 @@ public class Program
     {
         var host = CreateHostBuilder(args).Build();
         await host.MigrateDatabaseAsync();
-        await host.SeedDataAsync();
         
         await host.RunAsync();
     }

@@ -8,6 +8,7 @@ using Identity.Domain.Enums;
 using Identity.Domain.Exceptions;
 using Identity.Domain.Interfaces;
 using Identity.Domain.Utils;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Domain.Services;
@@ -44,23 +45,8 @@ public class UserService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-
-    private Expression<Func<User, object>> CreateSortingExpression(string propName)
-    {
-        var prop = typeof(User).GetProperty(propName);
-
-        if (prop == null)
-            throw new BadRequestException(
-                "Name of prop to order is invalid. Consider write a name with a first letter being capital");
-        
-        var param = Expression.Parameter(typeof(User), "x");
-        var accessingProp = Expression.MakeMemberAccess(param, prop);
-        var lambdaResult = Expression.Convert(accessingProp, typeof(object));
-
-        return Expression.Lambda<Func<User, object>>(lambdaResult, param);
-    }
     
-    public IEnumerable<User> GetAll(QueryFiltersData filters)
+    public async Task<IEnumerable<User>> GetAll(QueryFiltersData filters)
     {
         var users = _repository.FindAll().Where(x => x.Role != Role.Service);
         
@@ -76,17 +62,11 @@ public class UserService
 
         if (!string.IsNullOrWhiteSpace(filters.SortBy) && filters.SortOrder != null)
         {
-            var exp = CreateSortingExpression(filters.SortBy);
-
-            users = filters.SortOrder == SortOrder.Asc
-                ? users.OrderBy(exp)
-                : users.OrderByDescending(exp);
+            users = users.OrderByName(filters.SortBy, filters.SortOrder.Value);
         }
         else if (!string.IsNullOrWhiteSpace(filters.SortBy))
         {
-            var exp = CreateSortingExpression(filters.SortBy);
-            
-            users = users.OrderBy(exp);
+            users = users.OrderByName(filters.SortBy);
         }
         else if (filters.SortOrder != null)
         {
@@ -95,7 +75,7 @@ public class UserService
                 : users.OrderByDescending(x => x.Id);
         }
 
-        return users.ToList();
+        return await users.ToListAsync();
     }
 
     public async Task<User?> GetById(Guid id)

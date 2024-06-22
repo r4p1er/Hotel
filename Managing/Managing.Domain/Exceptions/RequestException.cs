@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Identity.Domain.Exceptions;
+namespace Managing.Domain.Exceptions;
 
 public class RequestException(HttpStatusCode statusCode, string message) : Exception(message)
 {

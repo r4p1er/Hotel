@@ -1,8 +1,8 @@
-using Identity.Api.Middlewares;
-using Identity.Domain;
-using Identity.Infrastructure;
+using Managing.Api.Middlewares;
+using Managing.Domain;
+using Managing.Infrastructure;
 
-namespace Identity.Api;
+namespace Managing.Api;
 
 public class Startup
 {
@@ -23,8 +23,7 @@ public class Startup
         collection.AddSwagger();
 
         collection.AddAuth(_configuration["Auth:Key"]!);
-
-        collection.AddServicesOptions(_configuration);
+        
         collection.AddDomain();
         collection.AddInfrastructure(_configuration["Connection:Default"]!);
     }

@@ -1,5 +1,5 @@
 using System.Net;
 
-namespace Identity.Domain.Exceptions;
+namespace Managing.Domain.Exceptions;
 
 public class NotFoundException(string message) : RequestException(HttpStatusCode.NotFound, message);
