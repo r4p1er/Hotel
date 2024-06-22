@@ -8,6 +8,7 @@ using Identity.Domain.Enums;
 using Identity.Domain.Exceptions;
 using Identity.Domain.Interfaces;
 using Identity.Domain.Utils;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Domain.Services;
@@ -45,7 +46,7 @@ public class UserService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
     
-    public IEnumerable<User> GetAll(QueryFiltersData filters)
+    public async Task<IEnumerable<User>> GetAll(QueryFiltersData filters)
     {
         var users = _repository.FindAll().Where(x => x.Role != Role.Service);
         
@@ -74,7 +75,7 @@ public class UserService
                 : users.OrderByDescending(x => x.Id);
         }
 
-        return users.ToList();
+        return await users.ToListAsync();
     }
 
     public async Task<User?> GetById(Guid id)

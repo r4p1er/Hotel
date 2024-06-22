@@ -28,9 +28,9 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = "Admin, Service")]
-    public ActionResult<IEnumerable<User>> Search([FromQuery]QueryFiltersData filters)
+    public async Task<IEnumerable<User>> Search([FromQuery]QueryFiltersData filters)
     {
-        return _userService.GetAll(filters).ToList();
+        return await _userService.GetAll(filters);
     }
 
     [HttpGet("{id}")]

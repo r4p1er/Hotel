@@ -1,9 +1,9 @@
-using System.Linq.Expressions;
 using Managing.Domain.DataObjects;
 using Managing.Domain.Entities;
 using Managing.Domain.Enums;
 using Managing.Domain.Exceptions;
 using Managing.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Managing.Domain.Services;
 
@@ -16,7 +16,7 @@ public class RoomService
         _repository = repository;
     }
     
-    public IEnumerable<Room> GetAll(QueryFiltersData filters)
+    public async Task<IEnumerable<Room>> GetAll(QueryFiltersData filters)
     {
         var rooms = _repository.FindAll();
 
@@ -43,7 +43,7 @@ public class RoomService
                 : rooms.OrderByDescending(x => x.Id);
         }
 
-        return rooms.ToList();
+        return await rooms.ToListAsync();
     }
 
     public async Task<Room> GetById(Guid id)

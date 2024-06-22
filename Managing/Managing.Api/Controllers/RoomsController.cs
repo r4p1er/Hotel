@@ -18,9 +18,9 @@ public class RoomsController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Room> Search([FromQuery] QueryFiltersData filters)
+    public async Task<IEnumerable<Room>> Search([FromQuery] QueryFiltersData filters)
     {
-        return _roomService.GetAll(filters).ToList();
+        return await _roomService.GetAll(filters);
     }
 
     [HttpGet("{id}")]
