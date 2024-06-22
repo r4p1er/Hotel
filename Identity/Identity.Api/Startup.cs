@@ -1,89 +1,49 @@
-using System.Text;
 using Identity.Api.Middlewares;
 using Identity.Domain;
 using Identity.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 
 namespace Identity.Api;
 
 public class Startup
 {
     private readonly IConfiguration _configuration;
+    private readonly IWebHostEnvironment _environment;
 
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration, IWebHostEnvironment environment)
     {
         _configuration = configuration;
+        _environment = environment;
     }
 
     public void ConfigureServices(IServiceCollection collection)
     {
         collection.AddControllers();
-        collection.AddEndpointsApiExplorer();
-
-        collection.AddSwaggerGen(x =>
-        {
-            x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-            {
-                Description =
-                    "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
-            });
-            
-            x.AddSecurityRequirement(new OpenApiSecurityRequirement()
-            {
-                {
-                    new OpenApiSecurityScheme()
-                    {
-                        Reference = new OpenApiReference()
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new string[] {}
-                }
-            });
-        });
-
-        collection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    IssuerSigningKey =
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Auth:Key"]!)),
-                    ValidateIssuerSigningKey = true
-                };
-            });
         
-        collection.AddAuthorization();
+        collection.AddEndpointsApiExplorer();
+        collection.AddSwagger();
+
+        collection.AddAuth(_configuration["Auth:Key"]!);
 
         collection.AddServicesOptions(_configuration);
         collection.AddDomain();
         collection.AddInfrastructure(_configuration["Connection:Default"]!);
     }
 
-    public void Configure(WebApplication app)
+    public void Configure(IApplicationBuilder app)
     {
         app.UseMiddleware<ErrorHandlingMiddleware>();
         
-        if (app.Environment.IsDevelopment())
+        if (_environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
 
+        app.UseRouting();
+        
         app.UseAuthentication();
         app.UseAuthorization();
-        
-        app.MapControllers();
+
+        app.UseEndpoints(endpoints => endpoints.MapControllers());
     }
 }

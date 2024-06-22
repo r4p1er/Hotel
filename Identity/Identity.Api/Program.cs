@@ -6,18 +6,19 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
-        var startup = new Startup(builder.Configuration);
+        var host = CreateHostBuilder(args).Build();
+        await host.MigrateDatabaseAsync();
+        await host.SeedDataAsync();
         
-        startup.ConfigureServices(builder.Services);
+        await host.RunAsync();
+    }
 
-        var app = builder.Build();
-
-        startup.Configure(app);
-
-        await app.MigrateDatabaseAsync();
-        await app.SeedDataAsync();
-
-        await app.RunAsync();
+    private static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
     }
 }
