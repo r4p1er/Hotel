@@ -29,7 +29,12 @@ public class ErrorHandlingMiddleware
         context.Response.StatusCode = exception is RequestException
             ? (int)(exception as RequestException)!.StatusCode
             : StatusCodes.Status500InternalServerError;
-        var result = new { message = exception.Message };
+        var result = new
+        {
+            message = context.Response.StatusCode == StatusCodes.Status500InternalServerError
+                ? "Internal server error"
+                : exception.Message
+        };
 
         await context.Response.WriteAsJsonAsync(result);
     }

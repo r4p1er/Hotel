@@ -2,12 +2,7 @@ using System.Net;
 
 namespace Managing.Domain.Exceptions;
 
-public class RequestException : Exception
+public class RequestException(HttpStatusCode statusCode, string message) : Exception(message)
 {
-    public HttpStatusCode StatusCode { get; set; }
-
-    public RequestException(HttpStatusCode statusCode, string message) : base(message)
-    {
-        StatusCode = statusCode;
-    }
+    public HttpStatusCode StatusCode { get; set; } = statusCode;
 }

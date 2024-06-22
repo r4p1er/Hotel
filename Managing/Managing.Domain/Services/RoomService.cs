@@ -15,21 +15,6 @@ public class RoomService
     {
         _repository = repository;
     }
-
-    private Expression<Func<Room, object>> CreateSortingExpression(string propName)
-    {
-        var prop = typeof(Room).GetProperty(propName);
-
-        if (prop == null)
-            throw new BadRequestException(
-                "Name of prop to order is invalid. Consider write a name with a first letter being capital");
-        
-        var param = Expression.Parameter(typeof(Room), "x");
-        var accessingProp = Expression.MakeMemberAccess(param, prop);
-        var lambdaResult = Expression.Convert(accessingProp, typeof(object));
-
-        return Expression.Lambda<Func<Room, object>>(lambdaResult, param);
-    }
     
     public IEnumerable<Room> GetAll(QueryFiltersData filters)
     {
@@ -45,17 +30,11 @@ public class RoomService
 
         if (!string.IsNullOrWhiteSpace(filters.SortBy) && filters.SortOrder != null)
         {
-            var exp = CreateSortingExpression(filters.SortBy);
-
-            rooms = filters.SortOrder == SortOrder.Asc
-                ? rooms.OrderBy(exp)
-                : rooms.OrderByDescending(exp);
+            rooms = rooms.OrderByName(filters.SortBy, filters.SortOrder.Value);
         }
         else if (!string.IsNullOrWhiteSpace(filters.SortBy))
         {
-            var exp = CreateSortingExpression(filters.SortBy);
-            
-            rooms = rooms.OrderBy(exp);
+            rooms = rooms.OrderByName(filters.SortBy);
         }
         else if (filters.SortOrder != null)
         {

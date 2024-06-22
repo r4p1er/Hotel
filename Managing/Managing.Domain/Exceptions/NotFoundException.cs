@@ -2,7 +2,4 @@ using System.Net;
 
 namespace Managing.Domain.Exceptions;
 
-public class NotFoundException : RequestException
-{
-    public NotFoundException(string message) : base(HttpStatusCode.NotFound, message) {}
-}
+public class NotFoundException(string message) : RequestException(HttpStatusCode.NotFound, message);
