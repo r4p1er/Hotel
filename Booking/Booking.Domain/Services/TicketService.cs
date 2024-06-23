@@ -29,14 +29,14 @@ public class TicketService
         return ticket;
     }
 
-    public async Task<Ticket> CreateTicket(TicketData data)
+    public async Task<Ticket> CreateTicket(Guid userId, TicketData data)
     {
         if (data.To <= data.From) throw new BadRequestException("Invalid dates");
 
         var ticket = new Ticket()
         {
             Id = Guid.NewGuid(),
-            UserId = data.UserId,
+            UserId = userId,
             RoomId = data.RoomId,
             From = data.From,
             To = data.To,
