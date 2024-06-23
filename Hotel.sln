@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Booking", "Booking", "{2417
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booking.Domain", "Booking\Booking.Domain\Booking.Domain.csproj", "{8C865329-88F3-4FEC-A62D-A8DDA6BD8D55}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booking.Infrastructure", "Booking\Booking.Infrastructure\Booking.Infrastructure.csproj", "{81D55C0A-40BF-468A-AFA5-4F832B37D156}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,7 @@ Global
 		{23301494-2CC4-4E5D-9A75-A6322BED9A68} = {5AE9915C-5D46-44FB-AB51-CB27C349C380}
 		{7E661680-3DD4-4BE5-9552-F2C51B825A2D} = {5AE9915C-5D46-44FB-AB51-CB27C349C380}
 		{8C865329-88F3-4FEC-A62D-A8DDA6BD8D55} = {241795CB-9AB4-4999-A4D7-11D898911A1D}
+		{81D55C0A-40BF-468A-AFA5-4F832B37D156} = {241795CB-9AB4-4999-A4D7-11D898911A1D}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{414B74A3-E2B6-4BFB-812F-B8D52BFF7644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -63,5 +66,9 @@ Global
 		{8C865329-88F3-4FEC-A62D-A8DDA6BD8D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C865329-88F3-4FEC-A62D-A8DDA6BD8D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C865329-88F3-4FEC-A62D-A8DDA6BD8D55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81D55C0A-40BF-468A-AFA5-4F832B37D156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81D55C0A-40BF-468A-AFA5-4F832B37D156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81D55C0A-40BF-468A-AFA5-4F832B37D156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81D55C0A-40BF-468A-AFA5-4F832B37D156}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
