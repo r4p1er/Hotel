@@ -7,12 +7,10 @@ namespace Identity.Api;
 public class Startup
 {
     private readonly IConfiguration _configuration;
-    private readonly IWebHostEnvironment _environment;
 
-    public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+    public Startup(IConfiguration configuration)
     {
         _configuration = configuration;
-        _environment = environment;
     }
 
     public void ConfigureServices(IServiceCollection collection)
@@ -29,11 +27,11 @@ public class Startup
         collection.AddInfrastructure(_configuration["Connection:Default"]!);
     }
 
-    public void Configure(IApplicationBuilder app)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
     {
         app.UseMiddleware<ErrorHandlingMiddleware>();
         
-        if (_environment.IsDevelopment())
+        if (environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
