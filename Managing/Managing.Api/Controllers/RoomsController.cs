@@ -1,6 +1,6 @@
 using Managing.Domain.DataObjects;
 using Managing.Domain.Entities;
-using Managing.Domain.Services;
+using Managing.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +10,9 @@ namespace Managing.Api.Controllers;
 [Route("api/[controller]")]
 public class RoomsController : ControllerBase
 {
-    private readonly RoomService _roomService;
+    private readonly IRoomService _roomService;
 
-    public RoomsController(RoomService roomService)
+    public RoomsController(IRoomService roomService)
     {
         _roomService = roomService;
     }

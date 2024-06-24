@@ -1,3 +1,4 @@
+using Managing.Domain.Interfaces;
 using Managing.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,7 +8,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDomain(this IServiceCollection collection)
     {
-        collection.AddScoped<RoomService>();
+        collection.AddScoped<IRoomService, RoomService>();
 
         return collection;
     }

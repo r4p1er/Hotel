@@ -1,3 +1,4 @@
+using Booking.Domain.Interfaces;
 using Booking.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,7 +8,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDomain(this IServiceCollection collection)
     {
-        collection.AddScoped<TicketService>();
+        collection.AddScoped<ITicketService, TicketService>();
 
         return collection;
     }

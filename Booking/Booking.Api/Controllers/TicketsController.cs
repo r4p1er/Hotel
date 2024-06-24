@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Booking.Domain.DataObjects;
 using Booking.Domain.Entities;
-using Booking.Domain.Services;
+using Booking.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +11,9 @@ namespace Booking.Api.Controllers;
 [Route("api/[controller]")]
 public class TicketsController : ControllerBase
 {
-    private readonly TicketService _ticketService;
+    private readonly ITicketService _ticketService;
 
-    public TicketsController(TicketService ticketService)
+    public TicketsController(ITicketService ticketService)
     {
         _ticketService = ticketService;
     }

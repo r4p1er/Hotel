@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Identity.Domain.DataObjects;
 using Identity.Domain.Entities;
-using Identity.Domain.Services;
+using Identity.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +11,9 @@ namespace Identity.Api.Controllers;
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
-    private readonly UserService _userService;
+    private readonly IUserService _userService;
 
-    public UsersController(UserService userService)
+    public UsersController(IUserService userService)
     {
         _userService = userService;
     }

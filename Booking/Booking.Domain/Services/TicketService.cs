@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Booking.Domain.Services;
 
-public class TicketService
+public class TicketService : ITicketService
 {
     private readonly ITicketsRepository _repository;
 

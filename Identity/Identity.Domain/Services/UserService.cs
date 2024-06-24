@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Domain.Services;
 
-public class UserService
+public class UserService : IUserService
 {
     private readonly IUsersRepository _repository;
     private readonly UserServiceOptions _options;

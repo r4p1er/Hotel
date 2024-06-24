@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Managing.Domain.Services;
 
-public class RoomService
+public class RoomService : IRoomService
 {
     private readonly IRoomsRepository _repository;
 
