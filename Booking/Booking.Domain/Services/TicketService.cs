@@ -1,7 +1,7 @@
 using Booking.Domain.DataObjects;
 using Booking.Domain.Entities;
-using Booking.Domain.Exceptions;
 using Booking.Domain.Interfaces;
+using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Booking.Domain.Services;

@@ -1,11 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
+using Hotel.Shared.Exceptions;
 using Identity.Domain.DataObjects;
 using Identity.Domain.Entities;
 using Identity.Domain.Enums;
-using Identity.Domain.Exceptions;
 using Identity.Domain.Interfaces;
 using Identity.Domain.Utils;
 using Microsoft.EntityFrameworkCore;

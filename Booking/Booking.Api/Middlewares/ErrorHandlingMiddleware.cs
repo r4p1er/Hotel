@@ -1,4 +1,4 @@
-using Booking.Domain.Exceptions;
+using Hotel.Shared.Exceptions;
 
 namespace Booking.Api.Middlewares;
 

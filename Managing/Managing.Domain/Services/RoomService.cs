@@ -1,7 +1,7 @@
+using Hotel.Shared.Exceptions;
 using Managing.Domain.DataObjects;
 using Managing.Domain.Entities;
 using Managing.Domain.Enums;
-using Managing.Domain.Exceptions;
 using Managing.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
