@@ -1,6 +1,7 @@
 using Booking.Domain.DataObjects;
 using Booking.Domain.Entities;
 using Booking.Domain.Interfaces;
+using FluentValidation;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +10,12 @@ namespace Booking.Domain.Services;
 public class TicketService : ITicketService
 {
     private readonly ITicketsRepository _repository;
+    private readonly IValidator<TicketData> _validator;
 
-    public TicketService(ITicketsRepository repository)
+    public TicketService(ITicketsRepository repository, IValidator<TicketData> validator)
     {
         _repository = repository;
+        _validator = validator;
     }
 
     public async Task<IEnumerable<Ticket>> GetAll()
@@ -31,7 +34,7 @@ public class TicketService : ITicketService
 
     public async Task<Ticket> CreateTicket(Guid userId, TicketData data)
     {
-        if (data.To <= data.From) throw new BadRequestException("Invalid dates");
+        await _validator.ValidateAndThrowAsync(data);
 
         var ticket = new Ticket()
         {
