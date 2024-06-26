@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using FluentValidation;
 using Hotel.Shared.Exceptions;
 using Identity.Domain.DataObjects;
 using Identity.Domain.Entities;
@@ -16,18 +17,21 @@ public class UserService : IUserService
 {
     private readonly IUsersRepository _repository;
     private readonly UserServiceOptions _options;
+    private readonly IValidator<RegisterData> _validator;
 
-    public UserService(IUsersRepository repository, UserServiceOptions options)
+    public UserService(IUsersRepository repository, UserServiceOptions options, IValidator<RegisterData> validator)
     {
         _repository = repository;
         _options = options;
+        _validator = validator;
     }
     
-    public async Task<string?> Login(string email, string password)
+    public async Task<string> Login(string email, string password)
     {
         var user = await _repository.FindByEmailAsync(email);
-        
-        if (user == null || !PasswordHasher.Verify(password + _options.Pepper, user.PasswordHash)) return null;
+
+        if (user == null || !PasswordHasher.Verify(password + _options.Pepper, user.PasswordHash))
+            throw new NotFoundException("User not found");
 
         var signingCredentials =
             new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key)),
@@ -77,11 +81,13 @@ public class UserService : IUserService
         return await users.ToListAsync();
     }
 
-    public async Task<User?> GetById(Guid id)
+    public async Task<User> GetById(Guid id)
     {
         var user = await _repository.FindByIdAsync(id);
 
-        return (user?.Role == Role.Service ? null : user) ?? null;
+        if (user == null || user.Role == Role.Service) throw new NotFoundException("User not found");
+
+        return user;
     }
 
     private async Task<User> Register(RegisterData data, Role role)
@@ -109,16 +115,22 @@ public class UserService : IUserService
 
     public async Task<User> RegisterUser(RegisterData data)
     {
+        await _validator.ValidateAndThrowAsync(data);
+        
         return await Register(data, Role.User);
     }
 
     public async Task<User> RegisterManager(RegisterData data)
     {
+        await _validator.ValidateAndThrowAsync(data);
+        
         return await Register(data, Role.Manager);
     }
 
     public async Task EditSelf(Guid id, RegisterData data)
     {
+        await _validator.ValidateAndThrowAsync(data);
+        
         var user = await _repository.FindByIdAsync(id);
 
         if (user == null) throw new NotFoundException("User not found");
