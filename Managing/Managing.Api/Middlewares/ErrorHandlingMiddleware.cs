@@ -1,4 +1,4 @@
-using Managing.Domain.Exceptions;
+using Hotel.Shared.Exceptions;
 
 namespace Managing.Api.Middlewares;
 

@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Identity.Domain.DataObjects;
 using Identity.Domain.Entities;
-using Identity.Domain.Services;
+using Identity.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +11,9 @@ namespace Identity.Api.Controllers;
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
-    private readonly UserService _userService;
+    private readonly IUserService _userService;
 
-    public UsersController(UserService userService)
+    public UsersController(IUserService userService)
     {
         _userService = userService;
     }
@@ -23,7 +23,7 @@ public class UsersController : ControllerBase
     {
         var token = await _userService.Login(email, password);
 
-        return token == null ? NotFound() : Ok(new { Token = token });
+        return Ok(new { Token = token });
     }
 
     [HttpGet]
@@ -35,20 +35,18 @@ public class UsersController : ControllerBase
 
     [HttpGet("{id}")]
     [Authorize(Roles = "Admin, Service")]
-    public async Task<ActionResult<User>> GetById(Guid id)
+    public async Task<User> GetById(Guid id)
     {
         var user = await _userService.GetById(id);
 
-        return user == null ? NotFound() : user;
+        return user;
     }
 
     [HttpGet("self")]
     [Authorize(Roles = "User, Manager, Admin")]
-    public async Task<ActionResult<User>> GetSelf()
+    public async Task<User> GetSelf()
     {
         var user = await _userService.GetById(Guid.Parse(User.FindFirstValue("id")!));
-
-        if (user == null) return NotFound();
 
         return user;
     }

@@ -1,5 +1,5 @@
 using System.Net;
 
-namespace Managing.Domain.Exceptions;
+namespace Hotel.Shared.Exceptions;
 
 public class BadRequestException(string message) : RequestException(HttpStatusCode.BadRequest, message);

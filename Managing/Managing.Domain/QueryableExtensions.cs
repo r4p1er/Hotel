@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
+using Hotel.Shared.Exceptions;
 using Managing.Domain.Entities;
 using Managing.Domain.Enums;
-using Managing.Domain.Exceptions;
 
 namespace Managing.Domain;
 

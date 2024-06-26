@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Managing.Domain.Exceptions;
+namespace Hotel.Shared.Exceptions;
 
 public class RequestException(HttpStatusCode statusCode, string message) : Exception(message)
 {

@@ -1,19 +1,22 @@
+using FluentValidation;
+using Hotel.Shared.Exceptions;
 using Managing.Domain.DataObjects;
 using Managing.Domain.Entities;
 using Managing.Domain.Enums;
-using Managing.Domain.Exceptions;
 using Managing.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Managing.Domain.Services;
 
-public class RoomService
+public class RoomService : IRoomService
 {
     private readonly IRoomsRepository _repository;
+    private readonly IValidator<RoomData> _validator;
 
-    public RoomService(IRoomsRepository repository)
+    public RoomService(IRoomsRepository repository, IValidator<RoomData> validator)
     {
         _repository = repository;
+        _validator = validator;
     }
     
     public async Task<IEnumerable<Room>> GetAll(QueryFiltersData filters)
@@ -57,6 +60,8 @@ public class RoomService
 
     public async Task<Room> CreateRoom(RoomData data)
     {
+        await _validator.ValidateAndThrowAsync(data);
+        
         var room = new Room()
         {
             Id = Guid.NewGuid(),
@@ -72,6 +77,8 @@ public class RoomService
 
     public async Task EditRoom(Guid id, RoomData data)
     {
+        await _validator.ValidateAndThrowAsync(data);
+        
         var room = await _repository.FindByIdAsync(id);
 
         if (room == null) throw new NotFoundException("Room not found");
