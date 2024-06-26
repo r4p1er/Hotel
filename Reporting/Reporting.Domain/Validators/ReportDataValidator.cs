@@ -26,8 +26,7 @@ public class ReportDataValidator : AbstractValidator<ReportData>
             .WithMessage("{PropertyName} must not be greater than the property To");
 
         RuleFor(x => x.Data)
-            .NotEmpty()
-            .WithMessage("{PropertyName} must not be empty");
+            .SetValidator(new JsonDataValidator());
     }
 
     protected override void RaiseValidationException(ValidationContext<ReportData> context, ValidationResult result)
