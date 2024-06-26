@@ -5,8 +5,8 @@ namespace Reporting.Domain.Interfaces;
 
 public interface IReportService
 {
-    Task<IEnumerable<Report>> GetAll();
-    Task<Report> GetById(Guid id);
-    Task<Report> CreateReport(ReportData data);
+    Task<IEnumerable<ReportDTO>> GetAll();
+    Task<ReportDTO> GetById(Guid id);
+    Task<ReportDTO> CreateReport(ReportData data);
     Task DeleteReport(Guid id);
 }

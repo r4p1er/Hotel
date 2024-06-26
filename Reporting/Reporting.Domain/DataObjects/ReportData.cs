@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace Reporting.Domain.DataObjects;
 
 public class ReportData
@@ -8,5 +10,5 @@ public class ReportData
     
     public DateTime To { get; set; }
     
-    public string Data { get; set; }
+    public JsonDocument Data { get; set; }
 }

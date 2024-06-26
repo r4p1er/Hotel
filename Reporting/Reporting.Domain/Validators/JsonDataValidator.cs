@@ -6,58 +6,52 @@ using Hotel.Shared.Exceptions;
 
 namespace Reporting.Domain.Validators;
 
-public class JsonDataValidator : AbstractValidator<string>
+public class JsonDataValidator : AbstractValidator<JsonDocument>
 {
     public JsonDataValidator()
     {
         RuleFor(x => x)
             .Must(x =>
             {
-                if (string.IsNullOrWhiteSpace(x)) return false;
-                
-                try
+                if (x.RootElement.ValueKind != JsonValueKind.Array) return false;
+
+                bool atLeastOne = false;
+
+                foreach (var element in x.RootElement.EnumerateArray())
                 {
-                    var doc = JsonDocument.Parse(x);
+                    if (element.ValueKind != JsonValueKind.Object) return false;
 
-                    if (doc.RootElement.ValueKind != JsonValueKind.Array) return false;
+                    int nameCount = 0;
 
-                    foreach (var element in doc.RootElement.EnumerateArray())
+                    foreach (var prop in element.EnumerateObject())
                     {
-                        if (element.ValueKind != JsonValueKind.Object) return false;
-
-                        int nameCount = 0;
-
-                        foreach (var prop in element.EnumerateObject())
+                        if (prop.Name == "Name")
                         {
-                            if (prop.Name == "Name")
-                            {
-                                ++nameCount;
-                                continue;
-                            }
-
-                            try
-                            {
-                                var date = DateTime.ParseExact(prop.Name, "dd.MM.yy", CultureInfo.InvariantCulture);
-                            }
-                            catch (FormatException)
-                            {
-                                return false;
-                            }
+                            ++nameCount;
+                            continue;
                         }
 
-                        if (nameCount != 1) return false;
+                        try
+                        {
+                            var date = DateTime.ParseExact(prop.Name, "dd.MM.yy", CultureInfo.InvariantCulture);
+                        }
+                        catch (FormatException)
+                        {
+                            return false;
+                        }
                     }
-                }
-                catch (JsonException)
-                {
-                    return false;
+
+                    if (nameCount != 1) return false;
+
+                    atLeastOne = true;
                 }
 
-                return true;
-            }).WithMessage("Invalid json data");
+                return atLeastOne;
+            })
+            .WithMessage("Invalid json. Json root element must be an array containing at least 1 object comprised of only one Name prop and dates props");
     }
 
-    protected override void RaiseValidationException(ValidationContext<string> context, ValidationResult result)
+    protected override void RaiseValidationException(ValidationContext<JsonDocument> context, ValidationResult result)
     {
         var ex = new ValidationException(result.Errors);
 

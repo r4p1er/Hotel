@@ -1,3 +1,4 @@
+using System.Text.Json;
 using FluentValidation;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -18,21 +19,21 @@ public class ReportService : IReportService
         _validator = validator;
     }
 
-    public async Task<IEnumerable<Report>> GetAll()
+    public async Task<IEnumerable<ReportDTO>> GetAll()
     {
-        return await _repository.FindAll().ToListAsync();
+        return await _repository.FindAll().Select(x => new ReportDTO(x)).ToListAsync();
     }
 
-    public async Task<Report> GetById(Guid id)
+    public async Task<ReportDTO> GetById(Guid id)
     {
         var report = await _repository.FindByIdAsync(id);
 
         if (report == null) throw new NotFoundException("Report not found");
 
-        return report;
+        return new ReportDTO(report);
     }
 
-    public async Task<Report> CreateReport(ReportData data)
+    public async Task<ReportDTO> CreateReport(ReportData data)
     {
         await _validator.ValidateAndThrowAsync(data);
 
@@ -42,17 +43,19 @@ public class ReportService : IReportService
             Summary = data.Summary,
             From = data.From,
             To = data.To,
-            Data = data.Data
+            Data = JsonSerializer.Serialize(data.Data.RootElement)
         };
 
         await _repository.AddReportAsync(report);
 
-        return report;
+        return new ReportDTO(report);
     }
 
     public async Task DeleteReport(Guid id)
     {
-        var report = await GetById(id);
+        var report = await _repository.FindByIdAsync(id);
+
+        if (report == null) throw new NotFoundException("Report not found");
 
         await _repository.RemoveReportAsync(report);
     }
