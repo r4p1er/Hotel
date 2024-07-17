@@ -8,5 +8,7 @@ public class RabbitMessage
     
     public string Receiver { get; set; }
     
+    public string ResponseTarget { get; set; }
+    
     public string Data { get; set; }
 }

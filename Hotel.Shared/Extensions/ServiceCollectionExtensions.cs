@@ -8,7 +8,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddShared(this IServiceCollection collection)
     {
-        collection.AddScoped<IRabbitService, RabbitService>();
+        collection.AddSingleton<IRabbitConnectionService, RabbitConnectionService>();
+        collection.AddTransient<IRabbitService, RabbitService>();
 
         return collection;
     }

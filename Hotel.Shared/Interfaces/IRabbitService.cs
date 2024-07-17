@@ -2,11 +2,15 @@ using Hotel.Shared.Models;
 
 namespace Hotel.Shared.Interfaces;
 
-public interface IRabbitService : IDisposable
+public interface IRabbitService
 {
-    void Publish(string queue, RabbitMessage message);
+    Task<RabbitMessage?> RequestMessageAsync(RabbitMessage message, int timeout = 15000);
 
-    void AddMessageHandler(Func<RabbitMessage, Task<bool>> handler);
+    void SendMessage(RabbitMessage message);
 
-    void Listen();
+    void Listen(Func<RabbitMessage, Task> handler);
+
+    void Stop();
+
+    void Close();
 }
