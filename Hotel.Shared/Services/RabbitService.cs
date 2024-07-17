@@ -44,17 +44,17 @@ public class RabbitService : IRabbitService
         );
     }
 
-    public void AddMessageHandler(Func<RabbitMessage, Task> handler)
+    public void AddMessageHandler(Func<RabbitMessage, Task<bool>> handler)
     {
-        _consumer.Received += async (model, ea) =>
+        _consumer.Received += async (sender, args) =>
         {
-            var body = ea.Body.ToArray();
+            var body = args.Body.ToArray();
             var messageString = Encoding.UTF8.GetString(body);
             var message = JsonSerializer.Deserialize<RabbitMessage>(messageString)!;
 
-            await handler(message);
+            var processed = await handler(message);
             
-            _channel.BasicAck(ea.DeliveryTag, false);
+            if (processed) (sender as EventingBasicConsumer)!.Model.BasicAck(args.DeliveryTag, false);
         };
     }
 

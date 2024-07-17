@@ -6,7 +6,7 @@ public interface IRabbitService : IDisposable
 {
     void Publish(string queue, RabbitMessage message);
 
-    void AddMessageHandler(Func<RabbitMessage, Task> handler);
+    void AddMessageHandler(Func<RabbitMessage, Task<bool>> handler);
 
     void Listen();
 }
