@@ -1,6 +1,8 @@
+using System.Text.Json;
 using Hotel.Shared.Exceptions;
+using Microsoft.AspNetCore.Http;
 
-namespace Managing.Api.Middlewares;
+namespace Hotel.Shared.Middlewares;
 
 public class ErrorHandlingMiddleware
 {
@@ -36,6 +38,6 @@ public class ErrorHandlingMiddleware
                 : exception.Message
         };
 
-        await context.Response.WriteAsJsonAsync(result);
+        await context.Response.WriteAsync(JsonSerializer.Serialize(result));
     }
 }

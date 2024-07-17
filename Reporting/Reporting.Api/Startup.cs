@@ -1,4 +1,4 @@
-using Reporting.Api.Middlewares;
+using Hotel.Shared.Middlewares;
 using Reporting.Domain;
 using Reporting.Infrastructure;
 
