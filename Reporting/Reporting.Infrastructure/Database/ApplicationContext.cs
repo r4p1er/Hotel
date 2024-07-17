@@ -3,11 +3,9 @@ using Reporting.Domain.Entities;
 
 namespace Reporting.Infrastructure.Database;
 
-public class ApplicationContext : DbContext
+public class ApplicationContext(DbContextOptions<ApplicationContext> options) : DbContext(options)
 {
     public DbSet<Report> Reports { get; set; }
-    
-    public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

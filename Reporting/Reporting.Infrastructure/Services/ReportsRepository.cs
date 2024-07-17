@@ -5,36 +5,29 @@ using Reporting.Infrastructure.Database;
 
 namespace Reporting.Infrastructure.Services;
 
-public class ReportsRepository : IReportsRepository
+public class ReportsRepository(ApplicationContext context) : IReportsRepository
 {
-    private readonly ApplicationContext _context;
-
-    public ReportsRepository(ApplicationContext context)
-    {
-        _context = context;
-    }
-    
     public IQueryable<Report> FindAll()
     {
-        return _context.Reports;
+        return context.Reports;
     }
 
     public async Task<Report?> FindByIdAsync(Guid id)
     {
-        return await _context.Reports.FirstOrDefaultAsync(x => x.Id == id);
+        return await context.Reports.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task AddReportAsync(Report report)
     {
-        await _context.Reports.AddAsync(report);
+        await context.Reports.AddAsync(report);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 
     public async Task RemoveReportAsync(Report report)
     {
-        _context.Remove(report);
+        context.Remove(report);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 }

@@ -8,25 +8,16 @@ using Reporting.Domain.Interfaces;
 
 namespace Reporting.Domain.Services;
 
-public class ReportService : IReportService
+public class ReportService(IReportsRepository repository, IValidator<ReportData> validator) : IReportService
 {
-    private readonly IReportsRepository _repository;
-    private readonly IValidator<ReportData> _validator;
-
-    public ReportService(IReportsRepository repository, IValidator<ReportData> validator)
-    {
-        _repository = repository;
-        _validator = validator;
-    }
-
     public async Task<IEnumerable<ReportDTO>> GetAll()
     {
-        return await _repository.FindAll().Select(x => new ReportDTO(x)).ToListAsync();
+        return await repository.FindAll().Select(x => new ReportDTO(x)).ToListAsync();
     }
 
     public async Task<ReportDTO> GetById(Guid id)
     {
-        var report = await _repository.FindByIdAsync(id);
+        var report = await repository.FindByIdAsync(id);
 
         if (report == null) throw new NotFoundException("Report not found");
 
@@ -35,7 +26,7 @@ public class ReportService : IReportService
 
     public async Task<ReportDTO> CreateReport(ReportData data)
     {
-        await _validator.ValidateAndThrowAsync(data);
+        await validator.ValidateAndThrowAsync(data);
 
         var report = new Report()
         {
@@ -46,17 +37,17 @@ public class ReportService : IReportService
             Data = JsonSerializer.Serialize(data.Data.RootElement)
         };
 
-        await _repository.AddReportAsync(report);
+        await repository.AddReportAsync(report);
 
         return new ReportDTO(report);
     }
 
     public async Task DeleteReport(Guid id)
     {
-        var report = await _repository.FindByIdAsync(id);
+        var report = await repository.FindByIdAsync(id);
 
         if (report == null) throw new NotFoundException("Report not found");
 
-        await _repository.RemoveReportAsync(report);
+        await repository.RemoveReportAsync(report);
     }
 }
