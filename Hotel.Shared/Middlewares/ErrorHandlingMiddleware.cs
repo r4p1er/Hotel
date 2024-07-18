@@ -4,20 +4,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace Hotel.Shared.Middlewares;
 
-public class ErrorHandlingMiddleware
+public class ErrorHandlingMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public ErrorHandlingMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-    
     public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await _next.Invoke(context);
+            await next.Invoke(context);
         }
         catch (Exception e)
         {

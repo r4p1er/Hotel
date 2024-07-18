@@ -1,8 +1,8 @@
 namespace Reporting.Domain.DataObjects;
 
-public class ReportData
+public class BookingData
 {
-    public string Summary { get; set; }
+    public Guid RoomId { get; set; }
     
     public DateTime From { get; set; }
     

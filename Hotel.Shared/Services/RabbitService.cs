@@ -13,6 +13,7 @@ public class RabbitService : IRabbitService
     private readonly IModel _channel;
     private readonly RabbitOptions _options;
     private string _consumerTag = string.Empty;
+    private readonly JsonSerializerOptions _serializerOptions = new() { PropertyNameCaseInsensitive = true };
     
     public RabbitService(IRabbitConnectionService connection, RabbitOptions options)
     {
@@ -38,7 +39,7 @@ public class RabbitService : IRabbitService
         {
             var responseBody = args.Body.ToArray();
             var responseBodyString = Encoding.UTF8.GetString(responseBody);
-            result = JsonSerializer.Deserialize<RabbitMessage>(responseBodyString)!;
+            result = JsonSerializer.Deserialize<RabbitMessage>(responseBodyString, _serializerOptions)!;
             (sender as EventingBasicConsumer)!.Model.BasicAck(args.DeliveryTag, false);
         };
 
@@ -103,7 +104,7 @@ public class RabbitService : IRabbitService
         {
             var body = args.Body.ToArray();
             var messageString = Encoding.UTF8.GetString(body);
-            var message = JsonSerializer.Deserialize<RabbitMessage>(messageString)!;
+            var message = JsonSerializer.Deserialize<RabbitMessage>(messageString, _serializerOptions)!;
 
             await handler(message);
 
