@@ -1,4 +1,5 @@
 using System.Text;
+using Hotel.Shared.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -7,6 +8,15 @@ namespace Reporting.Api;
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddServicesOptions(this IServiceCollection collection,
+        IConfiguration configuration)
+    {
+        collection.AddSingleton<RabbitOptions>(provider =>
+            configuration.GetRequiredSection("Rabbit").Get<RabbitOptions>()!);
+
+        return collection;
+    }
+    
     public static IServiceCollection AddSwagger(this IServiceCollection collection)
     {
         collection.AddSwaggerGen(x =>
