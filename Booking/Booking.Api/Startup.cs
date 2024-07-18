@@ -1,5 +1,6 @@
 using Booking.Domain;
 using Booking.Infrastructure;
+using Hotel.Shared.Extensions;
 using Hotel.Shared.Middlewares;
 
 namespace Booking.Api;
@@ -15,8 +16,10 @@ public class Startup(IConfiguration configuration)
 
         collection.AddAuth(configuration["Auth:Key"]!);
 
+        collection.AddServicesOptions(configuration);
         collection.AddDomain();
         collection.AddInfrastructure(configuration["Connection:Default"]!);
+        collection.AddShared();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
