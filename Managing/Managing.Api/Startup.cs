@@ -1,3 +1,4 @@
+using Hotel.Shared.Extensions;
 using Hotel.Shared.Middlewares;
 using Managing.Domain;
 using Managing.Infrastructure;
@@ -14,9 +15,11 @@ public class Startup(IConfiguration configuration)
         collection.AddSwagger();
 
         collection.AddAuth(configuration["Auth:Key"]!);
-        
+
+        collection.AddServicesOptions(configuration);
         collection.AddDomain();
         collection.AddInfrastructure(configuration["Connection:Default"]!);
+        collection.AddShared();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
