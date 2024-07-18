@@ -78,7 +78,7 @@ public class ReportService(
             while (date <= data.To)
             {
                 item[date.ToString("dd.MM.yy")] =
-                    bookingData.From <= date && date <= bookingData.To ? "Забронирован" : "Свободен";
+                    bookingData.From.Date <= date.Date && date.Date <= bookingData.To.Date ? "Забронирован" : "Свободен";
                 date = date.AddDays(1);
             }
             
