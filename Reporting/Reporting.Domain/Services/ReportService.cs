@@ -2,8 +2,8 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentValidation;
 using Hotel.Shared.Exceptions;
-using Hotel.Shared.Interfaces;
-using Hotel.Shared.Models;
+using Hotel.Shared.MessageContracts;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Reporting.Domain.DataObjects;
 using Reporting.Domain.Entities;
@@ -11,10 +11,10 @@ using Reporting.Domain.Interfaces;
 
 namespace Reporting.Domain.Services;
 
-public class ReportService(
-    IReportsRepository repository,
+public class ReportService(IReportsRepository repository,
     IValidator<ReportData> validator,
-    IRabbitService rabbit) : IReportService
+    IRequestClient<SelectBookingTickets> bookingClient,
+    IRequestClient<SelectRoomNames> managingClient) : IReportService
 {
     public async Task<IEnumerable<ReportDTO>> GetAll()
     {
@@ -42,43 +42,31 @@ public class ReportService(
             To = data.To
         };
 
-        var bookingResponse = await rabbit.RequestMessageAsync(new RabbitMessage
+        var bookingResponse = await bookingClient.GetResponse<BookingTicketsResult>(new SelectBookingTickets
         {
-            Id = Guid.NewGuid(),
-            Name = "BookingDataRequired",
-            Receiver = "Booking",
-            Data = JsonSerializer.Serialize(new { From = data.From, To = data.To })
-        });
-
-        if (bookingResponse == null) throw new ArgumentNullException(nameof(RabbitMessage));
-
-        var serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        var bookingList = JsonSerializer.Deserialize<List<BookingData>>(bookingResponse.Data, serializerOptions);
-        var roomsId = bookingList!.Select(x => x.RoomId).ToList();
-
-        var managingResponse = await rabbit.RequestMessageAsync(new RabbitMessage
-        {
-            Id = Guid.NewGuid(),
-            Name = "RoomsNameRequired",
-            Receiver = "Managing",
-            Data = JsonSerializer.Serialize(roomsId)
+            From = data.From,
+            To = data.To
         });
         
-        if (managingResponse == null) throw new ArgumentNullException(nameof(RabbitMessage));
+        var roomsId = bookingResponse.Message.BookingTickets.Select(x => x.RoomId).ToList();
 
-        var roomList = JsonSerializer.Deserialize<List<RoomData>>(managingResponse.Data, serializerOptions);
+        var managingResponse = await managingClient.GetResponse<RoomNamesResult>(new SelectRoomNames
+        {
+            Guids = roomsId
+        });
+        
         var result = new List<JsonObject>();
 
-        foreach (var bookingData in bookingList!)
+        foreach (var ticket in bookingResponse.Message.BookingTickets)
         {
             var item = new JsonObject();
-            item["Name"] = roomList!.FirstOrDefault(x => x.Id == bookingData.RoomId)!.Name;
+            item["Name"] = managingResponse.Message.Rooms.FirstOrDefault(x => x.Id == ticket.RoomId)!.Name;
             var date = data.From;
 
             while (date <= data.To)
             {
                 item[date.ToString("dd.MM.yy")] =
-                    bookingData.From.Date <= date.Date && date.Date <= bookingData.To.Date ? "Забронирован" : "Свободен";
+                    ticket.From.Date <= date.Date && date.Date <= ticket.To.Date ? "Забронирован" : "Свободен";
                 date = date.AddDays(1);
             }
             

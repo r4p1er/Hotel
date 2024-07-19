@@ -1,6 +1,6 @@
-namespace Booking.Infrastructure.Models;
+namespace Hotel.Shared.MessageContracts;
 
-public class BookingDataRequiredModel
+public class SelectBookingTickets
 {
     public DateTime From { get; set; }
     

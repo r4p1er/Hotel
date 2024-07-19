@@ -1,7 +1,8 @@
 using Managing.Domain.Interfaces;
 using Managing.Infrastructure.Database;
-using Managing.Infrastructure.HostedServices;
+using Managing.Infrastructure.RabbitConsumers;
 using Managing.Infrastructure.Services;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +14,22 @@ public static class ServiceCollectionExtensions
     {
         collection.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connection));
         collection.AddScoped<IRoomsRepository, RoomsRepository>();
-        collection.AddHostedService<RabbitHostedService>();
+
+        return collection;
+    }
+
+    public static IServiceCollection AddRabbitMq(this IServiceCollection collection, string host)
+    {
+        collection.AddMassTransit(x =>
+        {
+            x.AddConsumer<SelectRoomNamesConsumer>();
+
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(host);
+                cfg.ConfigureEndpoints(context);
+            });
+        });
 
         return collection;
     }

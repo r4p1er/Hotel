@@ -1,4 +1,4 @@
-namespace Reporting.Domain.DataObjects;
+namespace Hotel.Shared.Models;
 
 public class RoomData
 {

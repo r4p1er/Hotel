@@ -1,4 +1,3 @@
-using Hotel.Shared.Extensions;
 using Hotel.Shared.Middlewares;
 using Reporting.Domain;
 using Reporting.Infrastructure;
@@ -15,11 +14,10 @@ public class Startup(IConfiguration configuration)
         collection.AddSwagger();
 
         collection.AddAuth(configuration["Auth:Key"]!);
-
-        collection.AddServicesOptions(configuration);
+        
         collection.AddDomain();
         collection.AddInfrastructure(configuration["Connection:Default"]!);
-        collection.AddShared();
+        collection.AddRabbitMq(configuration["Rabbit:Host"]!);
     }
     
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)

@@ -1,6 +1,6 @@
-namespace Reporting.Domain.DataObjects;
+namespace Hotel.Shared.Models;
 
-public class BookingData
+public class BookingTicket
 {
     public Guid RoomId { get; set; }
     
