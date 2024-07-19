@@ -1,6 +1,8 @@
 using Hotel.Shared.Middlewares;
 using Identity.Domain;
+using Identity.Domain.DataObjects;
 using Identity.Infrastructure;
+using Identity.Infrastructure.DataObjects;
 
 namespace Identity.Api;
 
@@ -14,10 +16,15 @@ public class Startup(IConfiguration configuration)
         collection.AddSwagger();
 
         collection.AddAuth(configuration["Auth:Key"]!);
-
-        collection.AddServicesOptions(configuration);
+        
         collection.AddDomain();
         collection.AddInfrastructure(configuration["Connection:Default"]!);
+
+        var userServiceOptions = configuration.GetRequiredSection("Auth").Get<UserServiceOptions>();
+        collection.AddUserService(userServiceOptions!);
+
+        var dataSeederOptions = configuration.GetRequiredSection("Seeding").Get<DataSeederOptions>();
+        collection.AddDataSeeder(dataSeederOptions!);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)

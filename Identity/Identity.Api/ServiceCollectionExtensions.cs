@@ -1,6 +1,4 @@
 using System.Text;
-using Identity.Domain.DataObjects;
-using Identity.Infrastructure.DataObjects;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -9,17 +7,6 @@ namespace Identity.Api;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddServicesOptions(this IServiceCollection collection, IConfiguration configuration)
-    {
-        collection.AddSingleton<UserServiceOptions>(provider =>
-            configuration.GetRequiredSection("Auth").Get<UserServiceOptions>()!);
-
-        collection.AddSingleton<DataSeederOptions>(provider =>
-            configuration.GetRequiredSection("Seeding").Get<DataSeederOptions>()!);
-
-        return collection;
-    }
-
     public static IServiceCollection AddSwagger(this IServiceCollection collection)
     {
         collection.AddSwaggerGen(x =>
