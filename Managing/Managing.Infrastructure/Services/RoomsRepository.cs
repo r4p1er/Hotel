@@ -5,43 +5,45 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Managing.Infrastructure.Services;
 
-public class RoomsRepository : IRoomsRepository
+/// <summary>
+/// Репозиторий с номерами отеля. Реализация IRoomsRepository
+/// </summary>
+/// <param name="context">Контекст БД</param>
+public class RoomsRepository(ApplicationContext context) : IRoomsRepository
 {
-    private readonly ApplicationContext _context;
-
-    public RoomsRepository(ApplicationContext context)
-    {
-        _context = context;
-    }
-    
+    /// <inheritdoc cref="IRoomsRepository.FindAll"/>
     public IQueryable<Room> FindAll()
     {
-        return _context.Rooms;
+        return context.Rooms;
     }
 
+    /// <inheritdoc cref="IRoomsRepository.FindByIdAsync"/>
     public async Task<Room?> FindByIdAsync(Guid id)
     {
-        return await _context.Rooms.FirstOrDefaultAsync(x => x.Id == id);
+        return await context.Rooms.FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    /// <inheritdoc cref="IRoomsRepository.AddRoomAsync"/>
     public async Task AddRoomAsync(Room room)
     {
-        await _context.AddAsync(room);
+        await context.AddAsync(room);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 
+    /// <inheritdoc cref="IRoomsRepository.UpdateRoomAsync"/>
     public async Task UpdateRoomAsync(Room room)
     {
-        _context.Rooms.Update(room);
+        context.Rooms.Update(room);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 
+    /// <inheritdoc cref="IRoomsRepository.RemoveRoomAsync"/>
     public async Task RemoveRoomAsync(Room room)
     {
-        _context.Rooms.Remove(room);
+        context.Rooms.Remove(room);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 }

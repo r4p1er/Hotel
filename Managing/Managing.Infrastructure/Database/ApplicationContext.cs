@@ -3,12 +3,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Managing.Infrastructure.Database;
 
-public class ApplicationContext : DbContext
+/// <summary>
+/// Контекст БД
+/// </summary>
+/// <param name="options">Опции контекста БД</param>
+public class ApplicationContext(DbContextOptions<ApplicationContext> options) : DbContext(options)
 {
+    /// <summary>
+    /// Коллекция номеров отеля
+    /// </summary>
     public DbSet<Room> Rooms { get; set; }
-    
-    public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) {}
 
+    /// <summary>
+    /// Добавить ограничение на поле Price
+    /// </summary>
+    /// <param name="modelBuilder">ModelBuilder</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Room>().ToTable(t => t.HasCheckConstraint("ValidPrice", "\"Price\" > 0"));

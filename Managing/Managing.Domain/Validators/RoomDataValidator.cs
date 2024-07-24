@@ -5,6 +5,9 @@ using Managing.Domain.DataObjects;
 
 namespace Managing.Domain.Validators;
 
+/// <summary>
+/// Валидатор данных нового номера отеля
+/// </summary>
 public class RoomDataValidator : AbstractValidator<RoomData>
 {
     public RoomDataValidator()
@@ -28,6 +31,12 @@ public class RoomDataValidator : AbstractValidator<RoomData>
             .WithMessage("{PropertyName} must be greater than 0");
     }
 
+    /// <summary>
+    /// Изменить стандартное исключение на свое кастомное
+    /// </summary>
+    /// <param name="context">Контекст валидации</param>
+    /// <param name="result">Результат валидации</param>
+    /// <exception cref="BadRequestException">Исключение с HTTP статус кодом 400 Bad Request</exception>
     protected override void RaiseValidationException(ValidationContext<RoomData> context, ValidationResult result)
     {
         var ex = new ValidationException(result.Errors);

@@ -5,8 +5,16 @@ using MassTransit;
 
 namespace Managing.Infrastructure.RabbitConsumers;
 
+/// <summary>
+/// Потребитель команды SelectRoomNames
+/// </summary>
+/// <param name="roomService">Сервис для работы с номерами отеля</param>
 public class SelectRoomNamesConsumer(IRoomService roomService) : IConsumer<SelectRoomNames>
 {
+    /// <summary>
+    /// Потребить сообщение
+    /// </summary>
+    /// <param name="context">Контекст сообщения</param>
     public async Task Consume(ConsumeContext<SelectRoomNames> context)
     {
         var result = new List<RoomData>();

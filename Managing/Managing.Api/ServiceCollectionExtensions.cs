@@ -5,8 +5,16 @@ using Microsoft.OpenApi.Models;
 
 namespace Managing.Api;
 
+/// <summary>
+/// Расширения коллекции сервисов
+/// </summary>
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// Добавить сервисы для работы swagger
+    /// </summary>
+    /// <param name="collection">Коллекция сервисов</param>
+    /// <returns>Коллекция сервисов</returns>
     public static IServiceCollection AddSwagger(this IServiceCollection collection)
     {
         collection.AddSwaggerGen(x =>
@@ -40,6 +48,12 @@ public static class ServiceCollectionExtensions
         return collection;
     }
 
+    /// <summary>
+    /// Добавить сервисы аутентификации и авторизации
+    /// </summary>
+    /// <param name="collection">Коллекция сервисов</param>
+    /// <param name="key">Ключ для шифрования JWT</param>
+    /// <returns>Коллекция сервисов</returns>
     public static IServiceCollection AddAuth(this IServiceCollection collection, string key)
     {
         collection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -8,20 +8,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Managing.Domain.Services;
 
-public class RoomService : IRoomService
+/// <summary>
+/// Сервис для работы с номерами отеля. Реализация IRoomService
+/// </summary>
+/// <param name="repository">Репозиторий номеров отеля</param>
+/// <param name="validator">Валидатор данных нового номера отеля</param>
+public class RoomService(IRoomsRepository repository, IValidator<RoomData> validator)
+    : IRoomService
 {
-    private readonly IRoomsRepository _repository;
-    private readonly IValidator<RoomData> _validator;
-
-    public RoomService(IRoomsRepository repository, IValidator<RoomData> validator)
-    {
-        _repository = repository;
-        _validator = validator;
-    }
-    
+    /// <inheritdoc cref="IRoomService.GetAll"/>
     public async Task<IEnumerable<Room>> GetAll(QueryFiltersData filters)
     {
-        var rooms = _repository.FindAll();
+        var rooms = repository.FindAll();
 
         rooms = string.IsNullOrEmpty(filters.Search)
             ? rooms
@@ -49,18 +47,20 @@ public class RoomService : IRoomService
         return await rooms.ToListAsync();
     }
 
+    /// <inheritdoc cref="IRoomService.GetById"/>
     public async Task<Room> GetById(Guid id)
     {
-        var room = await _repository.FindByIdAsync(id);
+        var room = await repository.FindByIdAsync(id);
 
         if (room == null) throw new NotFoundException("Room not found");
 
         return room;
     }
 
+    /// <inheritdoc cref="IRoomService.CreateRoom"/>
     public async Task<Room> CreateRoom(RoomData data)
     {
-        await _validator.ValidateAndThrowAsync(data);
+        await validator.ValidateAndThrowAsync(data);
         
         var room = new Room()
         {
@@ -70,16 +70,17 @@ public class RoomService : IRoomService
             Price = data.Price
         };
 
-        await _repository.AddRoomAsync(room);
+        await repository.AddRoomAsync(room);
 
         return room;
     }
 
+    /// <inheritdoc cref="IRoomService.EditRoom"/>
     public async Task EditRoom(Guid id, RoomData data)
     {
-        await _validator.ValidateAndThrowAsync(data);
+        await validator.ValidateAndThrowAsync(data);
         
-        var room = await _repository.FindByIdAsync(id);
+        var room = await repository.FindByIdAsync(id);
 
         if (room == null) throw new NotFoundException("Room not found");
 
@@ -87,15 +88,16 @@ public class RoomService : IRoomService
         room.Description = data.Description;
         room.Price = data.Price;
 
-        await _repository.UpdateRoomAsync(room);
+        await repository.UpdateRoomAsync(room);
     }
 
+    /// <inheritdoc cref="IRoomService.DeleteRoom"/>
     public async Task DeleteRoom(Guid id)
     {
-        var room = await _repository.FindByIdAsync(id);
+        var room = await repository.FindByIdAsync(id);
 
         if (room == null) throw new NotFoundException("Room not found");
 
-        await _repository.RemoveRoomAsync(room);
+        await repository.RemoveRoomAsync(room);
     }
 }
