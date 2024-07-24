@@ -2,7 +2,9 @@ using Identity.Domain.Interfaces;
 using Identity.Infrastructure.Database;
 using Identity.Infrastructure.DataObjects;
 using Identity.Infrastructure.Interfaces;
+using Identity.Infrastructure.RabbitConsumers;
 using Identity.Infrastructure.Services;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +24,22 @@ public static class ServiceCollectionExtensions
     {
         collection.AddSingleton<DataSeederOptions>(provider => options);
         collection.AddScoped<IDataSeeder, DataSeeder>();
+
+        return collection;
+    }
+
+    public static IServiceCollection AddRabbitMq(this IServiceCollection collection, string host)
+    {
+        collection.AddMassTransit(x =>
+        {
+            x.AddConsumer<SelectUserDataConsumer>();
+
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(host);
+                cfg.ConfigureEndpoints(context);
+            });
+        });
 
         return collection;
     }

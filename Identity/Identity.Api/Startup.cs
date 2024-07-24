@@ -25,6 +25,8 @@ public class Startup(IConfiguration configuration)
 
         var dataSeederOptions = configuration.GetRequiredSection("Seeding").Get<DataSeederOptions>();
         collection.AddDataSeeder(dataSeederOptions!);
+
+        collection.AddRabbitMq(configuration["Rabbit:Host"]!);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
