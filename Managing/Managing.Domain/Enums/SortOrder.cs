@@ -1,5 +1,8 @@
 namespace Managing.Domain.Enums;
 
+/// <summary>
+/// Порядок сортировки
+/// </summary>
 public enum SortOrder
 {
     Asc,

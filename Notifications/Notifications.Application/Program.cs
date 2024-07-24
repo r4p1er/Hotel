@@ -7,8 +7,15 @@ using Notifications.Infrastructure.Models;
 
 namespace Notifications.Application;
 
+/// <summary>
+/// Стартовый класс приложения
+/// </summary>
 class Program
 {
+    /// <summary>
+    /// Стартовый метод приложения, в котором создается, конфигурируется и запускается host
+    /// </summary>
+    /// <param name="args">Параметры командной строки</param>
     public static async Task Main(string[] args)
     {
         var builder = Host.CreateApplicationBuilder(args);

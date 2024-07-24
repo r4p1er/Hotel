@@ -10,8 +10,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Infrastructure;
 
+/// <summary>
+/// Расширения коллекции сервисов
+/// </summary>
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// Добавить сервисы инфрструктурного слоя
+    /// </summary>
+    /// <param name="collection">Коллекция сервисов</param>
+    /// <param name="connection">Строка подключения к БД</param>
+    /// <returns>Коллекция сервисов</returns>
     public static IServiceCollection AddInfrastructure(this IServiceCollection collection, string connection)
     {
         collection.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connection));
@@ -20,6 +29,12 @@ public static class ServiceCollectionExtensions
         return collection;
     }
 
+    /// <summary>
+    /// Добавить сервис IDataSeeder
+    /// </summary>
+    /// <param name="collection">Коллекция сервисов</param>
+    /// <param name="options">Опции сервиса IDataSeeder</param>
+    /// <returns>Коллекция сервисов</returns>
     public static IServiceCollection AddDataSeeder(this IServiceCollection collection, DataSeederOptions options)
     {
         collection.AddSingleton<DataSeederOptions>(provider => options);
@@ -28,6 +43,12 @@ public static class ServiceCollectionExtensions
         return collection;
     }
 
+    /// <summary>
+    /// Добавить сервис для коммуникации с брокером сообщений RabbitMQ
+    /// </summary>
+    /// <param name="collection">Коллекция сервисов</param>
+    /// <param name="host">Адрес хоста брокера сообщений</param>
+    /// <returns>Коллекция сервисов</returns>
     public static IServiceCollection AddRabbitMq(this IServiceCollection collection, string host)
     {
         collection.AddMassTransit(x =>

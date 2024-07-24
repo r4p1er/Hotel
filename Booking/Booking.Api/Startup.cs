@@ -4,8 +4,16 @@ using Hotel.Shared.Middlewares;
 
 namespace Booking.Api;
 
+/// <summary>
+/// Конфигурация работы приложения
+/// </summary>
+/// <param name="configuration">Конфигурационные данные приложения</param>
 public class Startup(IConfiguration configuration)
 {
+    /// <summary>
+    /// Добавление всех необходимых сервисов в DI контейнер
+    /// </summary>
+    /// <param name="collection">Коллекция сервисов</param>
     public void ConfigureServices(IServiceCollection collection)
     {
         collection.AddControllers();
@@ -20,6 +28,11 @@ public class Startup(IConfiguration configuration)
         collection.AddRabbitMq(configuration["Rabbit:Host"]!);
     }
 
+    /// <summary>
+    /// Сконфигурировать работу приложения
+    /// </summary>
+    /// <param name="app">IApplicationBuilder</param>
+    /// <param name="environment">IWebHostEnvironment</param>
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
     {
         app.UseMiddleware<ErrorHandlingMiddleware>();

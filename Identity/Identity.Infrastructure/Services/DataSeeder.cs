@@ -8,22 +8,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Services;
 
-public class DataSeeder : IDataSeeder
+/// <inheritdoc cref="IDataSeeder"/>
+public class DataSeeder(ApplicationContext context, DataSeederOptions options) : IDataSeeder
 {
-    private readonly ApplicationContext _context;
-    private readonly DataSeederOptions _options;
-
-    public DataSeeder(ApplicationContext context, DataSeederOptions options)
-    {
-        _context = context;
-        _options = options;
-    }
-    
+    /// <inheritdoc cref="IDataSeeder.SeedAsync"/>
     public async Task SeedAsync()
     {
-        if (await _context.Users.FirstOrDefaultAsync(x => x.Role == Role.Admin) == null)
+        if (await context.Users.FirstOrDefaultAsync(x => x.Role == Role.Admin) == null)
         {
-            await _context.AddAsync(new User()
+            await context.AddAsync(new User()
             {
                 Id = Guid.NewGuid(),
                 Name = "Александр",
@@ -31,15 +24,15 @@ public class DataSeeder : IDataSeeder
                 Patronymic = "Михайлович",
                 Email = "tsyganok2015@gmail.com",
                 PhoneNumber = "88005553535",
-                PasswordHash = PasswordHasher.HashPassword(_options.AdminPassword + _options.Pepper),
+                PasswordHash = PasswordHasher.HashPassword(options.AdminPassword + options.Pepper),
                 Role = Role.Admin,
                 IsBlocked = false
             });
         }
 
-        if (await _context.Users.FirstOrDefaultAsync(x => x.Role == Role.Service) == null)
+        if (await context.Users.FirstOrDefaultAsync(x => x.Role == Role.Service) == null)
         {
-            await _context.AddAsync(new User()
+            await context.AddAsync(new User()
             {
                 Id = Guid.NewGuid(),
                 Name = "Service",
@@ -47,12 +40,12 @@ public class DataSeeder : IDataSeeder
                 Patronymic = "Service",
                 Email = "Service",
                 PhoneNumber = "Service",
-                PasswordHash = PasswordHasher.HashPassword(_options.ServicePassword + _options.Pepper),
+                PasswordHash = PasswordHasher.HashPassword(options.ServicePassword + options.Pepper),
                 Role = Role.Service,
                 IsBlocked = false
             });
         }
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 }

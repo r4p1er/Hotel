@@ -3,8 +3,15 @@ using Managing.Infrastructure.Database;
 
 namespace Managing.Api;
 
+/// <summary>
+/// Стартовый класс приложения
+/// </summary>
 public class Program
 {
+    /// <summary>
+    /// Стартовый метод приложения
+    /// </summary>
+    /// <param name="args">Параметры командной строки</param>
     public static async Task Main(string[] args)
     {
         var host = CreateHostBuilder(args).Build();
@@ -13,6 +20,11 @@ public class Program
         await host.RunAsync();
     }
 
+    /// <summary>
+    /// Создать и сконфигурировать IHostBuilder
+    /// </summary>
+    /// <param name="args">Параметры командной строки</param>
+    /// <returns>Сконфигурированный IHostBuilder</returns>
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
         return Host.CreateDefaultBuilder(args)

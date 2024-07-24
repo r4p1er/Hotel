@@ -5,8 +5,16 @@ using MassTransit;
 
 namespace Booking.Infrastructure.RabbitConsumers;
 
+/// <summary>
+/// Потребитель команды на выборку заявок на бронирование
+/// </summary>
+/// <param name="ticketService">Сервис для работы с пользователями</param>
 public class SelectBookingTicketsConsumer(ITicketService ticketService) : IConsumer<SelectBookingTickets>
 {
+    /// <summary>
+    /// Обработать поступившее сообщение
+    /// </summary>
+    /// <param name="context">Контекст сообщения</param>
     public async Task Consume(ConsumeContext<SelectBookingTickets> context)
     {
         var fromDate = context.Message.From;
