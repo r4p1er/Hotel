@@ -4,8 +4,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace Hotel.Shared.Middlewares;
 
+/// <summary>
+/// Middleware для централизованной обработки исключений
+/// </summary>
+/// <param name="next"></param>
 public class ErrorHandlingMiddleware(RequestDelegate next)
 {
+    /// <summary>
+    /// Вызвать middleware
+    /// </summary>
+    /// <param name="context"><inheritdoc cref="HttpContext"/></param>
     public async Task InvokeAsync(HttpContext context)
     {
         try
@@ -18,6 +26,11 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
         }
     }
 
+    /// <summary>
+    /// Обработать исключение
+    /// </summary>
+    /// <param name="context"><inheritdoc cref="HttpContext"/></param>
+    /// <param name="exception">Вызванное исключение</param>
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
