@@ -6,11 +6,23 @@ using Notifications.Domain.Models;
 
 namespace Notifications.Domain.Services;
 
+/// <summary>
+/// Сервис для уведомления пользователей по электронной почте. Реализация INotificationService
+/// </summary>
+/// <param name="emailSending">Сервис для отправки электронных писем</param>
+/// <param name="identityClient">Клиент RabbitMQ для отправки команды в Identity микросервис</param>
+/// <param name="managingClient">Клиент RabbitMQ для отправки команды в Managing микросервис</param>
+/// <param name="options">Опции сервиса NotificationService</param>
 public class NotificationService(IEmailSendingService emailSending, 
     IRequestClient<SelectUserData> identityClient,
     IRequestClient<SelectRoomNames> managingClient,
     NotificationServiceOptions options) : INotificationService
 {
+    /// <summary>
+    /// Подготовить основу электронного пиьсма
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя</param>
+    /// <returns>Электронное письмо</returns>
     private async Task<MimeMessage> PrepareMessage(Guid userId)
     {
         var identityResponse = await identityClient.GetResponse<UserDataResult>(new SelectUserData
@@ -28,6 +40,11 @@ public class NotificationService(IEmailSendingService emailSending,
         return message;
     }
 
+    /// <summary>
+    /// Получить название номера отеля по его идентификатору
+    /// </summary>
+    /// <param name="roomId">Идентификатор номера отеля</param>
+    /// <returns>Название номера отеля</returns>
     private async Task<string> GetRoomName(Guid roomId)
     {
         var managingResponse = await managingClient.GetResponse<RoomNamesResult>(new SelectRoomNames
@@ -38,6 +55,7 @@ public class NotificationService(IEmailSendingService emailSending,
         return managingResponse.Message.Rooms.First().Name;
     }
     
+    /// <inheritdoc cref="INotificationService.TicketCreateNotify"/>
     public async Task TicketCreateNotify(BookingTicketCreated publishedEvent)
     {
         var roomName = await GetRoomName(publishedEvent.RoomId);
@@ -53,6 +71,7 @@ public class NotificationService(IEmailSendingService emailSending,
         await emailSending.SendEmailAsync(message);
     }
 
+    /// <inheritdoc cref="INotificationService.TicketCancelNotify"/>
     public async Task TicketCancelNotify(BookingTicketCanceled publishedEvent)
     {
         var roomName = await GetRoomName(publishedEvent.RoomId);
@@ -68,6 +87,7 @@ public class NotificationService(IEmailSendingService emailSending,
         await emailSending.SendEmailAsync(message);
     }
 
+    /// <inheritdoc cref="INotificationService.StatusChangeNotify"/>
     public async Task StatusChangeNotify(ConfirmationStatusChanged publishedEvent)
     {
         var roomName = await GetRoomName(publishedEvent.RoomId);
