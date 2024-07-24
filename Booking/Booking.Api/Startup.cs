@@ -31,8 +31,8 @@ public class Startup(IConfiguration configuration)
     /// <summary>
     /// Сконфигурировать работу приложения
     /// </summary>
-    /// <param name="app"><inheritdoc cref="IApplicationBuilder"/></param>
-    /// <param name="environment"><inheritdoc cref="IWebHostEnvironment"/></param>
+    /// <param name="app">IApplicationBuilder</param>
+    /// <param name="environment">IWebHostEnvironment</param>
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
     {
         app.UseMiddleware<ErrorHandlingMiddleware>();

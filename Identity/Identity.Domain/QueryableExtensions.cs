@@ -5,8 +5,19 @@ using Identity.Domain.Enums;
 
 namespace Identity.Domain;
 
+/// <summary>
+/// Расширения для IQueryable
+/// </summary>
 public static class QueryableExtensions
 {
+    /// <summary>
+    /// Отсортировать по выбранному полю
+    /// </summary>
+    /// <param name="queryable">IQueryable с пользователями</param>
+    /// <param name="name">Название поля для сортировки</param>
+    /// <param name="order">Порядок сортировки</param>
+    /// <returns>Отсортированный IQueryable с пользователями</returns>
+    /// <exception cref="BadRequestException">Исключение 400 Bad Request, если название поля для сортировки неверное</exception>
     public static IQueryable<User> OrderByName(this IQueryable<User> queryable, string name,
         SortOrder order = SortOrder.Asc)
     {

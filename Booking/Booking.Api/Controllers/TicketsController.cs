@@ -14,9 +14,7 @@ namespace Booking.Api.Controllers;
 [Route("api/[controller]")]
 public class TicketsController : ControllerBase
 {
-    /// <summary>
     /// <inheritdoc cref="ITicketService"/>
-    /// </summary>
     private readonly ITicketService _ticketService;
 
     public TicketsController(ITicketService ticketService)
@@ -57,7 +55,7 @@ public class TicketsController : ControllerBase
     /// <summary>
     /// Создать заявку на бронирование
     /// </summary>
-    /// <param name="data"><inheritdoc cref="TicketData"/></param>
+    /// <param name="data">Данные для создания новой заявки</param>
     /// <returns>Заявка на бронирование, обернутая в ActionResult</returns>
     [HttpPost]
     [Authorize(Roles = "User")]
@@ -72,7 +70,7 @@ public class TicketsController : ControllerBase
     /// Изменить статус заявки на бронирование на противоположный
     /// </summary>
     /// <param name="id">Идентификатор заявки на бронирование</param>
-    /// <returns><inheritdoc cref="IActionResult"/></returns>
+    /// <returns>NoContent</returns>
     [HttpPatch("{id}")]
     [Authorize(Roles = "Manager, Admin")]
     public async Task<IActionResult> SwitchConfirmationStatus(Guid id)
@@ -86,7 +84,7 @@ public class TicketsController : ControllerBase
     /// Отменить (удалить) заявку на бронирование
     /// </summary>
     /// <param name="id">Идентификатор заявки на бронирование</param>
-    /// <returns><inheritdoc cref="IActionResult"/></returns>
+    /// <returns>NoContent, если запрещено - Forbid</returns>
     [HttpDelete("{id}")]
     [Authorize(Roles = "User")]
     public async Task<IActionResult> CancelTicket(Guid id)

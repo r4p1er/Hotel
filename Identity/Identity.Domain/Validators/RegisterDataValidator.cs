@@ -5,6 +5,9 @@ using Identity.Domain.DataObjects;
 
 namespace Identity.Domain.Validators;
 
+/// <summary>
+/// Валидатор регистрационных данных
+/// </summary>
 public class RegisterDataValidator : AbstractValidator<RegisterData>
 {
     public RegisterDataValidator()
@@ -47,6 +50,12 @@ public class RegisterDataValidator : AbstractValidator<RegisterData>
             .WithMessage("{PropertyName} length must not be greater than 128");
     }
 
+    /// <summary>
+    /// Изменить стандартное исключение на свое кастомное
+    /// </summary>
+    /// <param name="context">Контекст валидации</param>
+    /// <param name="result">Результат валидации</param>
+    /// <exception cref="BadRequestException">Исключение с HTTP статус кодом 400 Bad Request</exception>
     protected override void RaiseValidationException(ValidationContext<RegisterData> context, ValidationResult result)
     {
         var ex = new ValidationException(result.Errors);

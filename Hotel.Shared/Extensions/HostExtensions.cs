@@ -12,9 +12,9 @@ public static class HostExtensions
     /// <summary>
     /// Применить непримененные миграции БД
     /// </summary>
-    /// <param name="host"><inheritdoc cref="IHost"/></param>
-    /// <typeparam name="T"><inheritdoc cref="DbContext"/></typeparam>
-    /// <returns><inheritdoc cref="IHost"/></returns>
+    /// <param name="host">IHost</param>
+    /// <typeparam name="T">Контекст БД приложения</typeparam>
+    /// <returns>IHost</returns>
     public static async Task<IHost> MigrateDatabaseAsync<T>(this IHost host) where T: DbContext
     {
         using (var scope = host.Services.CreateScope())

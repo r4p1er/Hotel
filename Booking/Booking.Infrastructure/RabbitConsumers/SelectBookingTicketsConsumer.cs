@@ -8,7 +8,7 @@ namespace Booking.Infrastructure.RabbitConsumers;
 /// <summary>
 /// Потребитель команды на выборку заявок на бронирование
 /// </summary>
-/// <param name="ticketService"><inheritdoc cref="ITicketService"/></param>
+/// <param name="ticketService">Сервис для работы с пользователями</param>
 public class SelectBookingTicketsConsumer(ITicketService ticketService) : IConsumer<SelectBookingTickets>
 {
     /// <summary>

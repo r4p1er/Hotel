@@ -5,41 +5,40 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Services;
 
-public class UsersRepository : IUsersRepository
+/// <inheritdoc cref="IUsersRepository"/>
+public class UsersRepository(ApplicationContext context) : IUsersRepository
 {
-    private readonly ApplicationContext _context;
-    
-    public UsersRepository(ApplicationContext context)
-    {
-        _context = context;
-    }
-    
+    /// <inheritdoc cref="IUsersRepository.FindByEmailAsync"/>
     public async Task<User?> FindByEmailAsync(string email)
     {
-        return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+        return await context.Users.FirstOrDefaultAsync(x => x.Email == email);
     }
 
+    /// <inheritdoc cref="IUsersRepository.FindByIdAsync"/>
     public async Task<User?> FindByIdAsync(Guid id)
     {
-        return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        return await context.Users.FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    /// <inheritdoc cref="IUsersRepository.FindAll"/>
     public IQueryable<User> FindAll()
     {
-        return _context.Users;
+        return context.Users;
     }
 
+    /// <inheritdoc cref="IUsersRepository.AddUserAsync"/>
     public async Task AddUserAsync(User user)
     {
-        await _context.AddAsync(user);
+        await context.AddAsync(user);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 
+    /// <inheritdoc cref="IUsersRepository.UpdateUserAsync"/>
     public async Task UpdateUserAsync(User user)
     {
-        _context.Entry(user).State = EntityState.Modified;
+        context.Entry(user).State = EntityState.Modified;
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 }

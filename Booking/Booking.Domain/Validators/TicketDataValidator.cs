@@ -40,7 +40,7 @@ public class TicketDataValidator : AbstractValidator<TicketData>
     /// </summary>
     /// <param name="context">Контекст валидации</param>
     /// <param name="result">Результат валидации</param>
-    /// <exception cref="BadRequestException"><inheritdoc cref="BadRequestException"/>></exception>
+    /// <exception cref="BadRequestException">Исключение с HTTP статус кодом 400 Bad Request</exception>
     protected override void RaiseValidationException(ValidationContext<TicketData> context, ValidationResult result)
     {
         var ex = new ValidationException(result.Errors);

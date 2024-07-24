@@ -24,7 +24,7 @@ public class Program
     /// Создать HostBuilder, сконфигурированный для работы в web
     /// </summary>
     /// <param name="args">Аргументы командной строки</param>
-    /// <returns><inheritdoc cref="IHostBuilder"/></returns>
+    /// <returns>Созданный и сконфигурированный IHostBuilder</returns>
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
         return Host.CreateDefaultBuilder(args)

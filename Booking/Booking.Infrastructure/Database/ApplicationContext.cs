@@ -17,7 +17,7 @@ public class ApplicationContext(DbContextOptions<ApplicationContext> options) : 
     /// <summary>
     /// Добавление ограничение на столбец Price
     /// </summary>
-    /// <param name="modelBuilder"><inheritdoc cref="ModelBuilder"/></param>
+    /// <param name="modelBuilder">ModelBuilder</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Ticket>().ToTable(t => t.HasCheckConstraint("ValidPrice", "\"Price\" > 0"));
