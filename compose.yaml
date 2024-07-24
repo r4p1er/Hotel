@@ -1,0 +1,121 @@
+services:
+  booking:
+    build:
+      context: .
+      dockerfile: ./Booking/Booking.Api/Dockerfile
+    restart: always
+    ports:
+      - 5000:8080
+    environment:
+      Auth__Key: qwerty123
+      Connection__Default: "Host=booking-db;Port=5432;Database=Hotel;Username=postgres;Password=qwerty123"
+      Rabbit__Host: rabbit
+    depends_on:
+      - rabbit
+      - booking-db
+  
+  booking-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: qwerty123
+    volumes:
+      - booking-data:/var/lib/postgresql/data
+  
+  identity:
+    build:
+      context: .
+      dockerfile: ./Identity/Identity.Api/Dockerfile
+    restart: always
+    ports:
+      - 5001:8080
+    environment:
+      Auth__Key: qwerty123
+      Auth__Pepper: qwerty123
+      Auth__Expires: 60
+      Seeding__AdminPassword: qwerty123
+      Seeding__ServicePassword: qwerty123
+      Seeding__Pepper: qwerty123
+      Connection__Default: "Host=identity-db;Port=5432;Database=Hotel;Username=postgres;Password=qwerty123"
+      Rabbit__Host: rabbit
+    depends_on:
+      - rabbit
+      - identity-db
+      
+  identity-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: qwerty123
+    volumes:
+      - identity-data:/var/lib/postgresql/data
+  
+  managing:
+    build:
+      context: .
+      dockerfile: ./Managing/Managing.Api/Dockerfile
+    restart: always
+    ports:
+      - 5002:8080
+    environment:
+      Auth__Key: qwerty123
+      Connection__Default: "Host=managing-db;Port=5432;Database=Hotel;Username=postgres;Password=qwerty123"
+      Rabbit__Host: rabbit
+    depends_on:
+      - rabbit
+      - managing-db
+      
+  managing-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: qwerty123
+    volumes:
+      - managing-data:/var/lib/postgresql/data
+  
+  reporting:
+    build:
+      context: .
+      dockerfile: ./Reporting/Reporting.Api/Dockerfile
+    restart: always
+    ports:
+      - 5003:8080
+    environment:
+      Auth__Key: qwerty123
+      Connection__Default: "Host=reporting-db;Port=5432;Database=Hotel;Username=postgres;Password=qwerty123"
+      Rabbit__Host: rabbit
+    depends_on:
+      - rabbit
+      - reporting-db
+      
+  reporting-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: qwerty123
+    volumes:
+      - reporting-data:/var/lib/postgresql/data
+  
+  notifications:
+    build:
+      context: .
+      dockerfile: ./Notifications/Notifications.Application/Dockerfile
+    restart: always
+    environment:
+      Notification__MailboxName: "Hotel booking system"
+      Notification__Email: qwerty123@gmail
+      Sending__Email: qwerty123@gmail.com
+      Sending__Password: qwerty123
+      Rabbit__Host: rabbit
+    depends_on:
+      - rabbit
+  
+  rabbit:
+    image: rabbitmq
+    restart: always
+  
+volumes:
+  booking-data:
+  identity-data:
+  managing-data:
+  reporting-data:
