@@ -4,8 +4,16 @@ using Reporting.Infrastructure;
 
 namespace Reporting.Api;
 
+/// <summary>
+/// Сконфигурировать сервисы и поведение приложения
+/// </summary>
+/// <param name="configuration">Конфигурационные данные приложения</param>
 public class Startup(IConfiguration configuration)
 {
+    /// <summary>
+    /// Сконфигурировать сервисы приложения
+    /// </summary>
+    /// <param name="collection">Коллекция сервисов</param>
     public void ConfigureServices(IServiceCollection collection)
     {
         collection.AddControllers();
@@ -20,6 +28,11 @@ public class Startup(IConfiguration configuration)
         collection.AddRabbitMq(configuration["Rabbit:Host"]!);
     }
     
+    /// <summary>
+    /// Сконфигурировать поведение приложения
+    /// </summary>
+    /// <param name="app">IApplicationBuilder</param>
+    /// <param name="environment">IWebHostEnvironment</param>
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
     {
         app.UseMiddleware<ErrorHandlingMiddleware>();

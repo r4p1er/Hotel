@@ -5,10 +5,18 @@ using Reporting.Domain.Interfaces;
 
 namespace Reporting.Api.Controllers;
 
+/// <summary>
+/// Web API контроллер отчетов
+/// </summary>
+/// <param name="reportService">Сервис для рбаоты с отчетами</param>
 [ApiController]
 [Route("api/[controller]")]
 public class ReportsController(IReportService reportService) : ControllerBase
 {
+    /// <summary>
+    /// Получить все отчеты
+    /// </summary>
+    /// <returns>Коллекция с DTO отчетов</returns>
     [HttpGet]
     [Authorize(Roles = "Manager, Admin")]
     public async Task<IEnumerable<ReportDTO>> GetAll()
@@ -16,6 +24,11 @@ public class ReportsController(IReportService reportService) : ControllerBase
         return await reportService.GetAll();
     }
 
+    /// <summary>
+    /// Получить отчет по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор отчета</param>
+    /// <returns>DTO отчета</returns>
     [HttpGet("{id}")]
     [Authorize(Roles = "Manager, Admin")]
     public async Task<ReportDTO> GetById(Guid id)
@@ -23,6 +36,11 @@ public class ReportsController(IReportService reportService) : ControllerBase
         return await reportService.GetById(id);
     }
 
+    /// <summary>
+    /// Создать новый отчет
+    /// </summary>
+    /// <param name="data">Данные для создания нового отчета</param>
+    /// <returns>DTO созданного отчета, обернутый в CreatedAtAction</returns>
     [HttpPost]
     [Authorize(Roles = "Manager, Admin")]
     public async Task<ActionResult<ReportDTO>> CreateReport(ReportData data)
@@ -32,6 +50,10 @@ public class ReportsController(IReportService reportService) : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = report.Id }, report);
     }
 
+    /// <summary>
+    /// Удалить отчет по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор отчета</param>
     [HttpDelete("{id}")]
     [Authorize(Roles = "Manager, Admin")]
     public async Task DeleteReport(Guid id)

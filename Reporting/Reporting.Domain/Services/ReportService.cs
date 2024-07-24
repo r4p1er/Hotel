@@ -11,16 +11,25 @@ using Reporting.Domain.Interfaces;
 
 namespace Reporting.Domain.Services;
 
+/// <summary>
+/// Сервис для работы с отчетами. Реализует IReportService
+/// </summary>
+/// <param name="repository">Репозиторий с отчетами</param>
+/// <param name="validator">Валидатор данных для создания отчета</param>
+/// <param name="bookingClient">клиент для отправки команды в Booking микросервис</param>
+/// <param name="managingClient">клиент для отправки команды в Managing микросервис</param>
 public class ReportService(IReportsRepository repository,
     IValidator<ReportData> validator,
     IRequestClient<SelectBookingTickets> bookingClient,
     IRequestClient<SelectRoomNames> managingClient) : IReportService
 {
+    /// <inheritdoc cref="IReportService.GetAll"/>
     public async Task<IEnumerable<ReportDTO>> GetAll()
     {
         return await repository.FindAll().Select(x => new ReportDTO(x)).ToListAsync();
     }
 
+    /// <inheritdoc cref="IReportService.GetById"/>
     public async Task<ReportDTO> GetById(Guid id)
     {
         var report = await repository.FindByIdAsync(id);
@@ -30,6 +39,7 @@ public class ReportService(IReportsRepository repository,
         return new ReportDTO(report);
     }
 
+    /// <inheritdoc cref="IReportService.CreateReport"/>
     public async Task<ReportDTO> CreateReport(ReportData data)
     {
         await validator.ValidateAndThrowAsync(data);
@@ -79,6 +89,7 @@ public class ReportService(IReportsRepository repository,
         return new ReportDTO(report);
     }
 
+    /// <inheritdoc cref="IReportService.DeleteReport"/>
     public async Task DeleteReport(Guid id)
     {
         var report = await repository.FindByIdAsync(id);

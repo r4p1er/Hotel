@@ -5,6 +5,9 @@ using Reporting.Domain.DataObjects;
 
 namespace Reporting.Domain.Validators;
 
+/// <summary>
+/// Валидатор данных для создания отчета
+/// </summary>
 public class ReportDataValidator : AbstractValidator<ReportData>
 {
     public ReportDataValidator()
@@ -26,6 +29,12 @@ public class ReportDataValidator : AbstractValidator<ReportData>
             .WithMessage("{PropertyName} must not be greater than the property To");
     }
 
+    /// <summary>
+    /// Изменить стандартное исключение на свое кастомное
+    /// </summary>
+    /// <param name="context">Контекст валидации</param>
+    /// <param name="result">Результат валидации</param>
+    /// <exception cref="BadRequestException">Исключение с HTTP статус кодом 400 Bad Request</exception>
     protected override void RaiseValidationException(ValidationContext<ReportData> context, ValidationResult result)
     {
         var ex = new ValidationException(result.Errors);
