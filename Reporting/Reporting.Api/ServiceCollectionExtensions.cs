@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace Identity.Api;
+namespace Reporting.Api;
 
 public static class ServiceCollectionExtensions
 {

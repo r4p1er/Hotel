@@ -11,9 +11,16 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDomain(this IServiceCollection collection)
     {
-        collection.AddScoped<IUserService, UserService>();
         collection.AddScoped<IValidator<RegisterData>, RegisterDataValidator>();
         
+        return collection;
+    }
+
+    public static IServiceCollection AddUserService(this IServiceCollection collection, UserServiceOptions options)
+    {
+        collection.AddSingleton<UserServiceOptions>(provider => options);
+        collection.AddScoped<IUserService, UserService>();
+
         return collection;
     }
 }

@@ -1,6 +1,8 @@
 using Booking.Domain.Interfaces;
 using Booking.Infrastructure.Database;
+using Booking.Infrastructure.RabbitConsumers;
 using Booking.Infrastructure.Services;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +14,22 @@ public static class ServiceCollectionExtensions
     {
         collection.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connection));
         collection.AddScoped<ITicketsRepository, TicketsRepository>();
+
+        return collection;
+    }
+
+    public static IServiceCollection AddRabbitMq(this IServiceCollection collection, string host)
+    {
+        collection.AddMassTransit(x =>
+        {
+            x.AddConsumer<SelectBookingTicketsConsumer>();
+
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(host);
+                cfg.ConfigureEndpoints(context);
+            });
+        });
 
         return collection;
     }

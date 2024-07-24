@@ -1,8 +1,8 @@
-using Booking.Domain;
-using Booking.Infrastructure;
 using Hotel.Shared.Middlewares;
+using Reporting.Domain;
+using Reporting.Infrastructure;
 
-namespace Booking.Api;
+namespace Reporting.Api;
 
 public class Startup(IConfiguration configuration)
 {
@@ -19,7 +19,7 @@ public class Startup(IConfiguration configuration)
         collection.AddInfrastructure(configuration["Connection:Default"]!);
         collection.AddRabbitMq(configuration["Rabbit:Host"]!);
     }
-
+    
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
     {
         app.UseMiddleware<ErrorHandlingMiddleware>();

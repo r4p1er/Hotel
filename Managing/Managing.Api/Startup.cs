@@ -1,18 +1,11 @@
-using Managing.Api.Middlewares;
+using Hotel.Shared.Middlewares;
 using Managing.Domain;
 using Managing.Infrastructure;
 
 namespace Managing.Api;
 
-public class Startup
+public class Startup(IConfiguration configuration)
 {
-    private readonly IConfiguration _configuration;
-
-    public Startup(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
     public void ConfigureServices(IServiceCollection collection)
     {
         collection.AddControllers();
@@ -20,10 +13,11 @@ public class Startup
         collection.AddEndpointsApiExplorer();
         collection.AddSwagger();
 
-        collection.AddAuth(_configuration["Auth:Key"]!);
+        collection.AddAuth(configuration["Auth:Key"]!);
         
         collection.AddDomain();
-        collection.AddInfrastructure(_configuration["Connection:Default"]!);
+        collection.AddInfrastructure(configuration["Connection:Default"]!);
+        collection.AddRabbitMq(configuration["Rabbit:Host"]!);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)

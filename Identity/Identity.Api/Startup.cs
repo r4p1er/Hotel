@@ -1,18 +1,13 @@
-using Identity.Api.Middlewares;
+using Hotel.Shared.Middlewares;
 using Identity.Domain;
+using Identity.Domain.DataObjects;
 using Identity.Infrastructure;
+using Identity.Infrastructure.DataObjects;
 
 namespace Identity.Api;
 
-public class Startup
+public class Startup(IConfiguration configuration)
 {
-    private readonly IConfiguration _configuration;
-
-    public Startup(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
     public void ConfigureServices(IServiceCollection collection)
     {
         collection.AddControllers();
@@ -20,11 +15,16 @@ public class Startup
         collection.AddEndpointsApiExplorer();
         collection.AddSwagger();
 
-        collection.AddAuth(_configuration["Auth:Key"]!);
-
-        collection.AddServicesOptions(_configuration);
+        collection.AddAuth(configuration["Auth:Key"]!);
+        
         collection.AddDomain();
-        collection.AddInfrastructure(_configuration["Connection:Default"]!);
+        collection.AddInfrastructure(configuration["Connection:Default"]!);
+
+        var userServiceOptions = configuration.GetRequiredSection("Auth").Get<UserServiceOptions>();
+        collection.AddUserService(userServiceOptions!);
+
+        var dataSeederOptions = configuration.GetRequiredSection("Seeding").Get<DataSeederOptions>();
+        collection.AddDataSeeder(dataSeederOptions!);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
