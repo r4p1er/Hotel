@@ -3,8 +3,15 @@ using Hotel.Shared.Extensions;
 
 namespace Booking.Api;
 
+/// <summary>
+/// Стартовый класс приложения
+/// </summary>
 public class Program
 {
+    /// <summary>
+    /// Стартовый метод приложения
+    /// </summary>
+    /// <param name="args">Аргументы командной строки</param>
     public static async Task Main(string[] args)
     {
         var host = CreateHostBuilder(args).Build();
@@ -13,6 +20,11 @@ public class Program
         await host.RunAsync();
     }
 
+    /// <summary>
+    /// Создать HostBuilder, сконфигурированный для работы в web
+    /// </summary>
+    /// <param name="args">Аргументы командной строки</param>
+    /// <returns><inheritdoc cref="IHostBuilder"/></returns>
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
         return Host.CreateDefaultBuilder(args)

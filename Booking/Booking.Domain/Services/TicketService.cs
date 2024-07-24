@@ -9,15 +9,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Booking.Domain.Services;
 
+/// <summary>
+/// Сервис по работе с заявками на бронирование. Реализация интерфейса ITicketService
+/// </summary>
+/// <param name="repository"><inheritdoc cref="ITicketsRepository"/></param>
+/// <param name="validator">Валидатор данных для создания новой заявки на бронирование</param>
+/// <param name="publishEndpoint">Конечная точка брокера сообщений для публикации событий</param>
 public class TicketService(ITicketsRepository repository, 
     IValidator<TicketData> validator,
     IPublishEndpoint publishEndpoint) : ITicketService
 {
+    /// <inheritdoc cref="ITicketService.GetAll"/>
     public async Task<IEnumerable<Ticket>> GetAll()
     {
         return await repository.FindAll().ToListAsync();
     }
 
+    /// <inheritdoc cref="ITicketService.GetById"/>
     public async Task<Ticket> GetById(Guid id)
     {
         var ticket = await repository.FindByIdAsync(id);
@@ -27,6 +35,7 @@ public class TicketService(ITicketsRepository repository,
         return ticket;
     }
 
+    /// <inheritdoc cref="ITicketService.CreateTicket"/>
     public async Task<Ticket> CreateTicket(Guid userId, TicketData data)
     {
         await validator.ValidateAndThrowAsync(data);
@@ -57,6 +66,7 @@ public class TicketService(ITicketsRepository repository,
         return ticket;
     }
 
+    /// <inheritdoc cref="ITicketService.SwitchConfirmationStatus"/>
     public async Task SwitchConfirmationStatus(Guid id)
     {
         var ticket = await repository.FindByIdAsync(id);
@@ -76,6 +86,7 @@ public class TicketService(ITicketsRepository repository,
         });
     }
 
+    /// <inheritdoc cref="ITicketService.CancelTicket"/>
     public async Task CancelTicket(Guid id)
     {
         var ticket = await repository.FindByIdAsync(id);
