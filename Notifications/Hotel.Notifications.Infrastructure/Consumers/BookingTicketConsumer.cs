@@ -2,7 +2,7 @@ using Hotel.Notifications.Domain.Abstractions;
 using Hotel.Shared.MessageContracts;
 using MassTransit;
 
-namespace Hotel.Notifications.Infrastructure.RabbitConsumers;
+namespace Hotel.Notifications.Infrastructure.Consumers;
 
 /// <summary>
 /// Потребитель событий о создании, отмене заявок на бронирование, а также об изменении статуса бронирования

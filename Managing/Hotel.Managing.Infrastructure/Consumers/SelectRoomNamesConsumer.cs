@@ -3,7 +3,7 @@ using Hotel.Shared.MessageContracts;
 using Hotel.Shared.Models;
 using MassTransit;
 
-namespace Hotel.Managing.Infrastructure.RabbitConsumers;
+namespace Hotel.Managing.Infrastructure.Consumers;
 
 /// <summary>
 /// Потребитель команды SelectRoomNames

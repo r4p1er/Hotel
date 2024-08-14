@@ -3,7 +3,7 @@ using Hotel.Shared.MessageContracts;
 using Hotel.Shared.Models;
 using MassTransit;
 
-namespace Hotel.Booking.Infrastructure.RabbitConsumers;
+namespace Hotel.Booking.Infrastructure.Consumers;
 
 /// <summary>
 /// Потребитель команды на выборку заявок на бронирование

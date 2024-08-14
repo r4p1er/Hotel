@@ -1,6 +1,6 @@
 using Hotel.Booking.Domain.Abstractions;
+using Hotel.Booking.Infrastructure.Consumers;
 using Hotel.Booking.Infrastructure.Database;
-using Hotel.Booking.Infrastructure.RabbitConsumers;
 using Hotel.Booking.Infrastructure.Services;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;

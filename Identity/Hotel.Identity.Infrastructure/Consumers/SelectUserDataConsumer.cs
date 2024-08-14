@@ -2,7 +2,7 @@ using Hotel.Identity.Domain.Abstractions;
 using Hotel.Shared.MessageContracts;
 using MassTransit;
 
-namespace Hotel.Identity.Infrastructure.RabbitConsumers;
+namespace Hotel.Identity.Infrastructure.Consumers;
 
 /// <summary>
 /// Потребитель команды SelectUserData
