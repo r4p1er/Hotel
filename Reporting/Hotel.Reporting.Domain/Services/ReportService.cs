@@ -51,20 +51,16 @@ public class ReportService(IReportsRepository repository,
             From = data.From,
             To = data.To
         };
-
         var bookingResponse = await bookingClient.GetResponse<BookingTicketsResult>(new SelectBookingTickets
         {
             From = data.From,
             To = data.To
         });
-        
         var roomsId = bookingResponse.Message.BookingTickets.Select(x => x.RoomId).ToList();
-
         var managingResponse = await managingClient.GetResponse<RoomNamesResult>(new SelectRoomNames
         {
             Guids = roomsId
         });
-        
         var result = new List<JsonObject>();
 
         foreach (var ticket in bookingResponse.Message.BookingTickets)
