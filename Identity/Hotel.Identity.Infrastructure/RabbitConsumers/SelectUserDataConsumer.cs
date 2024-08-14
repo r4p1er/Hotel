@@ -1,5 +1,5 @@
+using Hotel.Identity.Domain.Abstractions;
 using Hotel.Shared.MessageContracts;
-using Hotel.Identity.Domain.Interfaces;
 using MassTransit;
 
 namespace Hotel.Identity.Infrastructure.RabbitConsumers;

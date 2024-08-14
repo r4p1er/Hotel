@@ -1,6 +1,6 @@
 using Hotel.Managing.Domain.Entities;
 
-namespace Hotel.Managing.Domain.Interfaces;
+namespace Hotel.Managing.Domain.Abstractions;
 
 /// <summary>
 /// Репозиторий с номерами отеля

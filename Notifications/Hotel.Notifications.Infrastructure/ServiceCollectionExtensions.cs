@@ -1,6 +1,6 @@
+using Hotel.Notifications.Domain.Abstractions;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
-using Hotel.Notifications.Domain.Interfaces;
 using Hotel.Notifications.Infrastructure.Models;
 using Hotel.Notifications.Infrastructure.RabbitConsumers;
 using Hotel.Notifications.Infrastructure.Services;

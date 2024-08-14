@@ -1,4 +1,4 @@
-using Hotel.Booking.Domain.Interfaces;
+using Hotel.Booking.Domain.Abstractions;
 using Hotel.Shared.MessageContracts;
 using Hotel.Shared.Models;
 using MassTransit;

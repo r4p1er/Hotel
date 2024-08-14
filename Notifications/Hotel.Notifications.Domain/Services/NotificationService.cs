@@ -1,4 +1,4 @@
-using Hotel.Notifications.Domain.Interfaces;
+using Hotel.Notifications.Domain.Abstractions;
 using Hotel.Notifications.Domain.Models;
 using Hotel.Shared.MessageContracts;
 using MassTransit;

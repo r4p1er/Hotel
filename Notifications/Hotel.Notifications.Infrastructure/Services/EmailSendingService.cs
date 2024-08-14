@@ -1,6 +1,6 @@
+using Hotel.Notifications.Domain.Abstractions;
 using MailKit.Net.Smtp;
 using MimeKit;
-using Hotel.Notifications.Domain.Interfaces;
 using Hotel.Notifications.Infrastructure.Models;
 
 namespace Hotel.Notifications.Infrastructure.Services;

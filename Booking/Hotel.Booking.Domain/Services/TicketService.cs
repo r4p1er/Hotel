@@ -1,7 +1,7 @@
 using FluentValidation;
+using Hotel.Booking.Domain.Abstractions;
 using Hotel.Booking.Domain.DataObjects;
 using Hotel.Booking.Domain.Entities;
-using Hotel.Booking.Domain.Interfaces;
 using Hotel.Shared.Exceptions;
 using Hotel.Shared.MessageContracts;
 using MassTransit;

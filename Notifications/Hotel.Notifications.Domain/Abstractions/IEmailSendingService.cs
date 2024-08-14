@@ -1,6 +1,6 @@
 using MimeKit;
 
-namespace Hotel.Notifications.Domain.Interfaces;
+namespace Hotel.Notifications.Domain.Abstractions;
 
 /// <summary>
 /// Сервис для отправки электронных писем

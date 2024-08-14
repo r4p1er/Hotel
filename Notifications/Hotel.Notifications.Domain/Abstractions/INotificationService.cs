@@ -1,6 +1,6 @@
 using Hotel.Shared.MessageContracts;
 
-namespace Hotel.Notifications.Domain.Interfaces;
+namespace Hotel.Notifications.Domain.Abstractions;
 
 /// <summary>
 /// Сервис для уведомления пользователей по электронной почте

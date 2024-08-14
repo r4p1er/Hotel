@@ -1,7 +1,7 @@
+using Hotel.Reporting.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MassTransit;
-using Hotel.Reporting.Domain.Interfaces;
 using Hotel.Reporting.Infrastructure.Database;
 using Hotel.Reporting.Infrastructure.Services;
 

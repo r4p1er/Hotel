@@ -1,7 +1,7 @@
 using Hotel.Identity.Domain.DataObjects;
 using Hotel.Identity.Domain.Entities;
 
-namespace Hotel.Identity.Domain.Interfaces;
+namespace Hotel.Identity.Domain.Abstractions;
 
 /// <summary>
 /// Сервис для рбаоты с пользователями

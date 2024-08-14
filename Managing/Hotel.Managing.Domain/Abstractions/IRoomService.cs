@@ -1,7 +1,7 @@
 using Hotel.Managing.Domain.DataObjects;
 using Hotel.Managing.Domain.Entities;
 
-namespace Hotel.Managing.Domain.Interfaces;
+namespace Hotel.Managing.Domain.Abstractions;
 
 /// <summary>
 /// Сервис для работы с номерами отеля

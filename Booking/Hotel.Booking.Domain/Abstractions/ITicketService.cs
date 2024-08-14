@@ -1,7 +1,7 @@
 using Hotel.Booking.Domain.DataObjects;
 using Hotel.Booking.Domain.Entities;
 
-namespace Hotel.Booking.Domain.Interfaces;
+namespace Hotel.Booking.Domain.Abstractions;
 
 /// <summary>
 /// Интерфейс сервиса для работы с заявками на бронирование

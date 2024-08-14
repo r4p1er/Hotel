@@ -1,4 +1,4 @@
-using Hotel.Notifications.Domain.Interfaces;
+using Hotel.Notifications.Domain.Abstractions;
 using Hotel.Notifications.Domain.Models;
 using Hotel.Notifications.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;

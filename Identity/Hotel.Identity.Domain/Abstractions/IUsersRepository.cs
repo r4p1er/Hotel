@@ -1,6 +1,6 @@
 using Hotel.Identity.Domain.Entities;
 
-namespace Hotel.Identity.Domain.Interfaces;
+namespace Hotel.Identity.Domain.Abstractions;
 
 /// <summary>
 /// Репозиторий с пользователями

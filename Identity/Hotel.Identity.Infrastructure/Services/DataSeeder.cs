@@ -1,9 +1,9 @@
 using Hotel.Identity.Domain.Entities;
 using Hotel.Identity.Domain.Enums;
 using Hotel.Identity.Domain.Utils;
+using Hotel.Identity.Infrastructure.Abstractions;
 using Hotel.Identity.Infrastructure.Database;
 using Hotel.Identity.Infrastructure.DataObjects;
-using Hotel.Identity.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Identity.Infrastructure.Services;

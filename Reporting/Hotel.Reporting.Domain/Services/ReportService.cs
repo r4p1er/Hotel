@@ -1,9 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentValidation;
+using Hotel.Reporting.Domain.Abstractions;
 using Hotel.Reporting.Domain.DataObjects;
 using Hotel.Reporting.Domain.Entities;
-using Hotel.Reporting.Domain.Interfaces;
 using Hotel.Shared.Exceptions;
 using Hotel.Shared.MessageContracts;
 using MassTransit;

@@ -1,4 +1,4 @@
-using Hotel.Booking.Domain.Interfaces;
+using Hotel.Booking.Domain.Abstractions;
 using Hotel.Booking.Infrastructure.Database;
 using Hotel.Booking.Infrastructure.RabbitConsumers;
 using Hotel.Booking.Infrastructure.Services;

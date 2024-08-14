@@ -1,5 +1,5 @@
+using Hotel.Managing.Domain.Abstractions;
 using Hotel.Managing.Domain.Entities;
-using Hotel.Managing.Domain.Interfaces;
 using Hotel.Managing.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 

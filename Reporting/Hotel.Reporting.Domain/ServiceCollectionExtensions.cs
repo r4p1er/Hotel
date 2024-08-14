@@ -1,6 +1,6 @@
 using FluentValidation;
+using Hotel.Reporting.Domain.Abstractions;
 using Hotel.Reporting.Domain.DataObjects;
-using Hotel.Reporting.Domain.Interfaces;
 using Hotel.Reporting.Domain.Services;
 using Hotel.Reporting.Domain.Validators;
 using Microsoft.Extensions.DependencyInjection;

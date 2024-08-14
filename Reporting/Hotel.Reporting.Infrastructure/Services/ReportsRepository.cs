@@ -1,6 +1,6 @@
+using Hotel.Reporting.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Hotel.Reporting.Domain.Entities;
-using Hotel.Reporting.Domain.Interfaces;
 using Hotel.Reporting.Infrastructure.Database;
 
 namespace Hotel.Reporting.Infrastructure.Services;

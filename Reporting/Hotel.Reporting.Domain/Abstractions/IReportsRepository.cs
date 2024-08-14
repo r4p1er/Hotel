@@ -1,6 +1,6 @@
 using Hotel.Reporting.Domain.Entities;
 
-namespace Hotel.Reporting.Domain.Interfaces;
+namespace Hotel.Reporting.Domain.Abstractions;
 
 /// <summary>
 /// Репозиторий с отчетами

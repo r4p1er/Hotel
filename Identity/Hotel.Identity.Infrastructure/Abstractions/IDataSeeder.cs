@@ -1,4 +1,4 @@
-namespace Hotel.Identity.Infrastructure.Interfaces;
+namespace Hotel.Identity.Infrastructure.Abstractions;
 
 /// <summary>
 /// Сервис для заполнения БД начальными данными

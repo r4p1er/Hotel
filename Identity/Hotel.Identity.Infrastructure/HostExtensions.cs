@@ -1,4 +1,4 @@
-using Hotel.Identity.Infrastructure.Interfaces;
+using Hotel.Identity.Infrastructure.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 

@@ -1,7 +1,6 @@
 using Hotel.Reporting.Domain.DataObjects;
-using Hotel.Reporting.Domain.Entities;
 
-namespace Hotel.Reporting.Domain.Interfaces;
+namespace Hotel.Reporting.Domain.Abstractions;
 
 /// <summary>
 /// Сервис для работы с отчетами

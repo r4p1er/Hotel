@@ -1,6 +1,6 @@
+using Hotel.Managing.Domain.Abstractions;
 using Hotel.Managing.Domain.DataObjects;
 using Hotel.Managing.Domain.Entities;
-using Hotel.Managing.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

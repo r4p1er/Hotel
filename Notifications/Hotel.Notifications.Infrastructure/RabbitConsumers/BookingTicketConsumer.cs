@@ -1,6 +1,6 @@
+using Hotel.Notifications.Domain.Abstractions;
 using Hotel.Shared.MessageContracts;
 using MassTransit;
-using Hotel.Notifications.Domain.Interfaces;
 
 namespace Hotel.Notifications.Infrastructure.RabbitConsumers;
 

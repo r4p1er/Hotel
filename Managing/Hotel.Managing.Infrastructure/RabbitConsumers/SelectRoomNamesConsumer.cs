@@ -1,6 +1,6 @@
+using Hotel.Managing.Domain.Abstractions;
 using Hotel.Shared.MessageContracts;
 using Hotel.Shared.Models;
-using Hotel.Managing.Domain.Interfaces;
 using MassTransit;
 
 namespace Hotel.Managing.Infrastructure.RabbitConsumers;

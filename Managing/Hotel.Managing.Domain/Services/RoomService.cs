@@ -1,8 +1,8 @@
 using FluentValidation;
+using Hotel.Managing.Domain.Abstractions;
 using Hotel.Managing.Domain.DataObjects;
 using Hotel.Managing.Domain.Entities;
 using Hotel.Managing.Domain.Enums;
-using Hotel.Managing.Domain.Interfaces;
 using Hotel.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
