@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Hotel.Booking.Domain.Services;
 
 /// <inheritdoc cref="ITicketService"/>
-public class TicketService(ITicketsRepository repository, 
+public class TicketService(
+    ITicketsRepository repository, 
     IValidator<TicketData> validator,
     IPublishEndpoint publishEndpoint) : ITicketService
 {

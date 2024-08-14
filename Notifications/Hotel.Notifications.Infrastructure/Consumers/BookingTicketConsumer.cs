@@ -8,7 +8,8 @@ namespace Hotel.Notifications.Infrastructure.Consumers;
 /// Потребитель событий о создании, отмене заявок на бронирование, а также об изменении статуса бронирования
 /// </summary>
 /// <param name="notificationService">Сервис для отправки уведомлений пользователям по электронной почте</param>
-public class BookingTicketConsumer(INotificationService notificationService) : IConsumer<BookingTicketCreated>, 
+public class BookingTicketConsumer(INotificationService notificationService) : 
+    IConsumer<BookingTicketCreated>, 
     IConsumer<BookingTicketCanceled>, 
     IConsumer<ConfirmationStatusChanged>
 {

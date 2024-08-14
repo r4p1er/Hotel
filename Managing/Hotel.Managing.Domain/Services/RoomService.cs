@@ -9,8 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Hotel.Managing.Domain.Services;
 
 /// <inheritdoc cref="IRoomService"/>
-public class RoomService(IRoomsRepository repository, IValidator<RoomData> validator)
-    : IRoomService
+public class RoomService(IRoomsRepository repository, IValidator<RoomData> validator) : IRoomService
 {
     /// <inheritdoc cref="IRoomService.GetAll"/>
     public async Task<IEnumerable<Room>> GetAll(QueryFiltersData filters)

@@ -12,7 +12,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Hotel.Reporting.Domain.Services;
 
 /// <inheritdoc cref="IReportService"/>
-public class ReportService(IReportsRepository repository,
+public class ReportService(
+    IReportsRepository repository,
     IValidator<ReportData> validator,
     IRequestClient<SelectBookingTickets> bookingClient,
     IRequestClient<SelectRoomNames> managingClient) : IReportService

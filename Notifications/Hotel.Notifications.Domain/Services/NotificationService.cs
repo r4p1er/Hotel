@@ -7,7 +7,8 @@ using MimeKit;
 namespace Hotel.Notifications.Domain.Services;
 
 /// <inheritdoc cref="INotificationService"/>
-public class NotificationService(IEmailSendingService emailSending, 
+public class NotificationService(
+    IEmailSendingService emailSending, 
     IRequestClient<SelectUserData> identityClient,
     IRequestClient<SelectRoomNames> managingClient,
     NotificationServiceOptions options) : INotificationService
