@@ -5,10 +5,7 @@ using Hotel.Reporting.Infrastructure;
 
 namespace Hotel.Reporting.Api;
 
-/// <summary>
-/// Сконфигурировать сервисы и поведение приложения
-/// </summary>
-/// <param name="configuration">Конфигурационные данные приложения</param>
+/// <summary/>
 public class Startup(IConfiguration configuration)
 {
     /// <summary>

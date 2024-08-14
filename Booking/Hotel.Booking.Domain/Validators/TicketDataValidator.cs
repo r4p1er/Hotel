@@ -10,6 +10,7 @@ namespace Hotel.Booking.Domain.Validators;
 /// </summary>
 public class TicketDataValidator : AbstractValidator<TicketData>
 {
+    /// <summary/>
     public TicketDataValidator()
     {
         RuleFor(x => x.RoomId)

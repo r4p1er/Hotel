@@ -13,6 +13,7 @@ public class TicketsRepository : ITicketsRepository
     /// <inheritdoc cref="ApplicationContext"/>
     private readonly ApplicationContext _context;
 
+    /// <summary/>
     public TicketsRepository(ApplicationContext context)
     {
         _context = context;

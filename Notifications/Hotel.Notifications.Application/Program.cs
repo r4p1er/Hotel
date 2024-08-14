@@ -7,15 +7,10 @@ using Hotel.Notifications.Infrastructure.Models;
 
 namespace Hotel.Notifications.Application;
 
-/// <summary>
-/// Стартовый класс приложения
-/// </summary>
+/// <summary/>
 class Program
 {
-    /// <summary>
-    /// Стартовый метод приложения, в котором создается, конфигурируется и запускается host
-    /// </summary>
-    /// <param name="args">Параметры командной строки</param>
+    /// <summary/>
     public static async Task Main(string[] args)
     {
         var builder = Host.CreateApplicationBuilder(args);

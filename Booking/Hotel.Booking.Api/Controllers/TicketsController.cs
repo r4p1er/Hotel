@@ -17,6 +17,7 @@ public class TicketsController : ControllerBase
     /// <inheritdoc cref="ITicketService"/>
     private readonly ITicketService _ticketService;
 
+    /// <summary/>
     public TicketsController(ITicketService ticketService)
     {
         _ticketService = ticketService;

@@ -10,6 +10,7 @@ namespace Hotel.Managing.Domain.Validators;
 /// </summary>
 public class RoomDataValidator : AbstractValidator<RoomData>
 {
+    /// <summary/>
     public RoomDataValidator()
     {
         RuleFor(x => x.Summary)

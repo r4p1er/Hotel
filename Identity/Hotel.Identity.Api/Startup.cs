@@ -7,10 +7,7 @@ using Hotel.Identity.Infrastructure.Models;
 
 namespace Hotel.Identity.Api;
 
-/// <summary>
-/// Конфигурация поведения приложения
-/// </summary>
-/// <param name="configuration">Конфигурационные данные</param>
+/// <summary/>
 public class Startup(IConfiguration configuration)
 {
     /// <summary>

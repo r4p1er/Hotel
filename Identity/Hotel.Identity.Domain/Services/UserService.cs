@@ -27,6 +27,7 @@ public class UserService : IUserService
     /// </summary>
     private readonly IValidator<RegisterData> _validator;
 
+    /// <summary/>
     public UserService(IUsersRepository repository, UserServiceOptions options, IValidator<RegisterData> validator)
     {
         _repository = repository;

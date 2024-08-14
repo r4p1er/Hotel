@@ -3,15 +3,10 @@ using Hotel.Shared.Extensions;
 
 namespace Hotel.Booking.Api;
 
-/// <summary>
-/// Стартовый класс приложения
-/// </summary>
+/// <summary/>
 public class Program
 {
-    /// <summary>
-    /// Стартовый метод приложения
-    /// </summary>
-    /// <param name="args">Аргументы командной строки</param>
+    /// <summary/>
     public static async Task Main(string[] args)
     {
         var host = CreateHostBuilder(args).Build();

@@ -5,10 +5,7 @@ using Hotel.Shared.Middlewares;
 
 namespace Hotel.Booking.Api;
 
-/// <summary>
-/// Конфигурация работы приложения
-/// </summary>
-/// <param name="configuration">Конфигурационные данные приложения</param>
+/// <summary/>
 public class Startup(IConfiguration configuration)
 {
     /// <summary>

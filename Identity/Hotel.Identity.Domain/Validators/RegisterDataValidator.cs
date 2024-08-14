@@ -10,6 +10,7 @@ namespace Hotel.Identity.Domain.Validators;
 /// </summary>
 public class RegisterDataValidator : AbstractValidator<RegisterData>
 {
+    /// <summary/>
     public RegisterDataValidator()
     {
         RuleFor(x => x.Name)
