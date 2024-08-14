@@ -20,9 +20,9 @@ public class RoomsController(IRoomService roomService) : ControllerBase
     /// <param name="filters">Фильтры поиска</param>
     /// <returns>Коллекция номеров отеля</returns>
     [HttpGet]
-    public async Task<IEnumerable<Room>> Search([FromQuery] QueryFiltersData filters)
+    public async Task<ActionResult<IEnumerable<Room>>> Search([FromQuery] QueryFiltersData filters)
     {
-        return await roomService.GetAll(filters);
+        return (await roomService.GetAll(filters)).ToList();
     }
 
     /// <summary>
@@ -31,7 +31,7 @@ public class RoomsController(IRoomService roomService) : ControllerBase
     /// <param name="id">Идентификатор номеря отеля</param>
     /// <returns>Номер отеля</returns>
     [HttpGet("{id}")]
-    public async Task<Room> GetById(Guid id)
+    public async Task<ActionResult<Room>> GetById(Guid id)
     {
         return await roomService.GetById(id);
     }

@@ -19,9 +19,9 @@ public class ReportsController(IReportService reportService) : ControllerBase
     /// <returns>Коллекция с DTO отчетов</returns>
     [HttpGet]
     [Authorize(Roles = "Manager, Admin")]
-    public async Task<IEnumerable<ReportDTO>> GetAll()
+    public async Task<ActionResult<IEnumerable<ReportDTO>>> GetAll()
     {
-        return await reportService.GetAll();
+        return (await reportService.GetAll()).ToList();
     }
 
     /// <summary>
@@ -31,7 +31,7 @@ public class ReportsController(IReportService reportService) : ControllerBase
     /// <returns>DTO отчета</returns>
     [HttpGet("{id}")]
     [Authorize(Roles = "Manager, Admin")]
-    public async Task<ReportDTO> GetById(Guid id)
+    public async Task<ActionResult<ReportDTO>> GetById(Guid id)
     {
         return await reportService.GetById(id);
     }
@@ -54,10 +54,13 @@ public class ReportsController(IReportService reportService) : ControllerBase
     /// Удалить отчет по его идентификатору
     /// </summary>
     /// <param name="id">Идентификатор отчета</param>
+    /// <returns>NoContent</returns>
     [HttpDelete("{id}")]
     [Authorize(Roles = "Manager, Admin")]
-    public async Task DeleteReport(Guid id)
+    public async Task<IActionResult> DeleteReport(Guid id)
     {
         await reportService.DeleteReport(id);
+
+        return NoContent();
     }
 }

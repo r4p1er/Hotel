@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Hotel.Booking.Domain.Abstractions;
 using Hotel.Booking.Domain.Entities;
 using Hotel.Booking.Domain.Models;
+using Hotel.Shared.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,9 +30,9 @@ public class TicketsController : ControllerBase
     /// <returns>Коллекция заявок на бронирование</returns>
     [HttpGet]
     [Authorize(Roles = "Manager, Admin, Service")]
-    public async Task<IEnumerable<Ticket>> GetAll()
+    public async Task<ActionResult<IEnumerable<Ticket>>> GetAll()
     {
-        return await _ticketService.GetAll();
+        return (await _ticketService.GetAll()).ToList();
     }
 
     /// <summary>
@@ -47,7 +48,7 @@ public class TicketsController : ControllerBase
 
         if (Guid.Parse(User.FindFirstValue("id")!) != ticket.UserId && User.IsInRole("User"))
         {
-            return Forbid();
+            throw new ForbidException("The user doesn't have an access to the ticket");
         }
 
         return ticket;
@@ -94,7 +95,7 @@ public class TicketsController : ControllerBase
 
         if (Guid.Parse(User.FindFirstValue("id")!) != ticket.UserId)
         {
-            return Forbid();
+            throw new ForbidException("The user doesn't have an access to the ticket");
         }        
         
         await _ticketService.CancelTicket(id);
