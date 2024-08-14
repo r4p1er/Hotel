@@ -23,7 +23,7 @@ public class Startup(IConfiguration configuration)
         
         collection.AddDomain();
         collection.AddInfrastructure(configuration["Connection:Default"]!);
-        collection.AddRabbitMq(configuration["Rabbit:Host"]!);
+        collection.AddRabbitMq(configuration["RabbitOptions:Host"]!);
     }
     
     /// <summary>

@@ -23,7 +23,7 @@ class Program
             .Get<EmailSendingServiceOptions>();
         builder.Services.AddEmailSending(sendingOptions!);
 
-        builder.Services.AddRabbitMq(builder.Configuration["Rabbit:Host"]!);
+        builder.Services.AddRabbitMq(builder.Configuration["RabbitOptions:Host"]!);
 
         var host = builder.Build();
         await host.RunAsync();
