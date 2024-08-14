@@ -1,7 +1,7 @@
 using Hotel.Reporting.Domain.Abstractions;
+using Hotel.Reporting.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Hotel.Reporting.Domain.DataObjects;
 
 namespace Hotel.Reporting.Api.Controllers;
 

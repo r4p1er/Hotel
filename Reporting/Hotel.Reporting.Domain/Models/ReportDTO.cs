@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Hotel.Reporting.Domain.Entities;
 
-namespace Hotel.Reporting.Domain.DataObjects;
+namespace Hotel.Reporting.Domain.Models;
 
 /// <summary>
 /// DTO для отпаравки отчета клиенту

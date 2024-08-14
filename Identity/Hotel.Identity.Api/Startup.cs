@@ -1,9 +1,9 @@
 using Hotel.Identity.Api.Extensions;
 using Hotel.Shared.Middlewares;
 using Hotel.Identity.Domain;
-using Hotel.Identity.Domain.DataObjects;
+using Hotel.Identity.Domain.Models;
 using Hotel.Identity.Infrastructure;
-using Hotel.Identity.Infrastructure.DataObjects;
+using Hotel.Identity.Infrastructure.Models;
 
 namespace Hotel.Identity.Api;
 

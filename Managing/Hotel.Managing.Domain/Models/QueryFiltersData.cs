@@ -1,9 +1,9 @@
-using Hotel.Identity.Domain.Enums;
+using Hotel.Managing.Domain.Enums;
 
-namespace Hotel.Identity.Domain.DataObjects;
+namespace Hotel.Managing.Domain.Models;
 
 /// <summary>
-/// Фильтры запроса
+/// Фильтры для запроса
 /// </summary>
 public class QueryFiltersData
 {
@@ -18,7 +18,7 @@ public class QueryFiltersData
     public int? Offset { get; set; }
     
     /// <summary>
-    /// Количество выбираемых из коллекци объектов
+    /// Количество выбираемых объектов из коллекции
     /// </summary>
     public int? Limit { get; set; }
     
@@ -26,7 +26,7 @@ public class QueryFiltersData
     public SortOrder? SortOrder { get; set; }
     
     /// <summary>
-    /// Поле, по которому произвести сортировку
+    /// Поле, по которому следует сортировать
     /// </summary>
     public string? SortBy { get; set; }
 }

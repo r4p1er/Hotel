@@ -1,4 +1,4 @@
-namespace Hotel.Reporting.Domain.DataObjects;
+namespace Hotel.Reporting.Domain.Models;
 
 /// <summary>
 /// Данные для создания нового отчета

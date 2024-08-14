@@ -1,4 +1,4 @@
-namespace Hotel.Booking.Domain.DataObjects;
+namespace Hotel.Booking.Domain.Models;
 
 /// <summary>
 /// Данные для создания заявки на бронирование

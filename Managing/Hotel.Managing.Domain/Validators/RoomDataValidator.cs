@@ -1,6 +1,6 @@
 using FluentValidation;
 using FluentValidation.Results;
-using Hotel.Managing.Domain.DataObjects;
+using Hotel.Managing.Domain.Models;
 using Hotel.Shared.Exceptions;
 
 namespace Hotel.Managing.Domain.Validators;

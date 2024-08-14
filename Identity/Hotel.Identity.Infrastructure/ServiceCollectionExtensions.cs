@@ -1,7 +1,7 @@
 using Hotel.Identity.Domain.Abstractions;
 using Hotel.Identity.Infrastructure.Abstractions;
 using Hotel.Identity.Infrastructure.Database;
-using Hotel.Identity.Infrastructure.DataObjects;
+using Hotel.Identity.Infrastructure.Models;
 using Hotel.Identity.Infrastructure.RabbitConsumers;
 using Hotel.Identity.Infrastructure.Services;
 using MassTransit;

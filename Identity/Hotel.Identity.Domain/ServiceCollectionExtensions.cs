@@ -1,6 +1,6 @@
 using FluentValidation;
 using Hotel.Identity.Domain.Abstractions;
-using Hotel.Identity.Domain.DataObjects;
+using Hotel.Identity.Domain.Models;
 using Hotel.Identity.Domain.Services;
 using Hotel.Identity.Domain.Validators;
 using Microsoft.Extensions.DependencyInjection;

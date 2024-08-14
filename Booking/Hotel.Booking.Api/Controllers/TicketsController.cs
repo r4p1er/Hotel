@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Hotel.Booking.Domain.Abstractions;
-using Hotel.Booking.Domain.DataObjects;
 using Hotel.Booking.Domain.Entities;
+using Hotel.Booking.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

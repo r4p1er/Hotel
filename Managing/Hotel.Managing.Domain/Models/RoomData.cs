@@ -1,4 +1,4 @@
-namespace Hotel.Managing.Domain.DataObjects;
+namespace Hotel.Managing.Domain.Models;
 
 /// <summary>
 /// Данные для создания нового номера

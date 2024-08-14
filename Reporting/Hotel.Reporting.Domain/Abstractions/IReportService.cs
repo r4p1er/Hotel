@@ -1,4 +1,4 @@
-using Hotel.Reporting.Domain.DataObjects;
+using Hotel.Reporting.Domain.Models;
 
 namespace Hotel.Reporting.Domain.Abstractions;
 

@@ -1,4 +1,4 @@
-namespace Hotel.Identity.Infrastructure.DataObjects;
+namespace Hotel.Identity.Infrastructure.Models;
 
 /// <summary>
 /// Опции для сервиса DataSeeder

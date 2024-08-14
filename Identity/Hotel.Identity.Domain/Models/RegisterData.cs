@@ -1,4 +1,4 @@
-namespace Hotel.Identity.Domain.DataObjects;
+namespace Hotel.Identity.Domain.Models;
 
 /// <summary>
 /// Данные для регистрации нового пользователя

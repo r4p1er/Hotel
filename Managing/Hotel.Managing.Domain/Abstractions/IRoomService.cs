@@ -1,5 +1,5 @@
-using Hotel.Managing.Domain.DataObjects;
 using Hotel.Managing.Domain.Entities;
+using Hotel.Managing.Domain.Models;
 
 namespace Hotel.Managing.Domain.Abstractions;
 
