@@ -9,12 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Booking.Domain.Services;
 
-/// <summary>
-/// Сервис по работе с заявками на бронирование. Реализация интерфейса ITicketService
-/// </summary>
-/// <param name="repository">Репозиторий пользователей</param>
-/// <param name="validator">Валидатор данных для создания новой заявки на бронирование</param>
-/// <param name="publishEndpoint">Конечная точка брокера сообщений для публикации событий</param>
+/// <inheritdoc cref="ITicketService"/>
 public class TicketService(ITicketsRepository repository, 
     IValidator<TicketData> validator,
     IPublishEndpoint publishEndpoint) : ITicketService

@@ -11,13 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Reporting.Domain.Services;
 
-/// <summary>
-/// Сервис для работы с отчетами. Реализует IReportService
-/// </summary>
-/// <param name="repository">Репозиторий с отчетами</param>
-/// <param name="validator">Валидатор данных для создания отчета</param>
-/// <param name="bookingClient">клиент для отправки команды в Booking микросервис</param>
-/// <param name="managingClient">клиент для отправки команды в Managing микросервис</param>
+/// <inheritdoc cref="IReportService"/>
 public class ReportService(IReportsRepository repository,
     IValidator<ReportData> validator,
     IRequestClient<SelectBookingTickets> bookingClient,

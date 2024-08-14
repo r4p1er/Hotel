@@ -4,7 +4,7 @@ using Hotel.Booking.Domain.Models;
 namespace Hotel.Booking.Domain.Abstractions;
 
 /// <summary>
-/// Интерфейс сервиса для работы с заявками на бронирование
+/// Сервис для работы с заявками на бронирование
 /// </summary>
 public interface ITicketService
 {

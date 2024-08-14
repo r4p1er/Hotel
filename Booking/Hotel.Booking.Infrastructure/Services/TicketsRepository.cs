@@ -5,9 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Booking.Infrastructure.Services;
 
-/// <summary>
-/// Репозиторий с заявками на бронирование. Реализация интерфейса ITicketsRepository
-/// </summary>
+/// <inheritdoc cref="ITicketsRepository"/>
 public class TicketsRepository : ITicketsRepository
 {
     /// <inheritdoc cref="ApplicationContext"/>

@@ -5,10 +5,7 @@ using Hotel.Reporting.Infrastructure.Database;
 
 namespace Hotel.Reporting.Infrastructure.Services;
 
-/// <summary>
-/// Репозиторий с отчетами. Реализация IReportsRepository
-/// </summary>
-/// <param name="context">Контекст БД</param>
+/// <inheritdoc cref="IReportsRepository"/>
 public class ReportsRepository(ApplicationContext context) : IReportsRepository
 {
     /// <inheritdoc cref="IReportsRepository.FindAll"/>

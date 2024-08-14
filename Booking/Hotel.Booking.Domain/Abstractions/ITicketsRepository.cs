@@ -3,7 +3,7 @@ using Hotel.Booking.Domain.Entities;
 namespace Hotel.Booking.Domain.Abstractions;
 
 /// <summary>
-/// Интерфейс репозитория с заявками на бронирование
+/// Репозиторий с заявками на бронирование
 /// </summary>
 public interface ITicketsRepository
 {

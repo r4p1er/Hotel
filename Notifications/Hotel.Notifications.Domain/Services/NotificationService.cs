@@ -6,13 +6,7 @@ using MimeKit;
 
 namespace Hotel.Notifications.Domain.Services;
 
-/// <summary>
-/// Сервис для уведомления пользователей по электронной почте. Реализация INotificationService
-/// </summary>
-/// <param name="emailSending">Сервис для отправки электронных писем</param>
-/// <param name="identityClient">Клиент RabbitMQ для отправки команды в Identity микросервис</param>
-/// <param name="managingClient">Клиент RabbitMQ для отправки команды в Managing микросервис</param>
-/// <param name="options">Опции сервиса NotificationService</param>
+/// <inheritdoc cref="INotificationService"/>
 public class NotificationService(IEmailSendingService emailSending, 
     IRequestClient<SelectUserData> identityClient,
     IRequestClient<SelectRoomNames> managingClient,

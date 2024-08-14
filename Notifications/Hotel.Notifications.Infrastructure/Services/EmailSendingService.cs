@@ -5,10 +5,7 @@ using Hotel.Notifications.Infrastructure.Models;
 
 namespace Hotel.Notifications.Infrastructure.Services;
 
-/// <summary>
-/// Сервис для отправки электронных писем
-/// </summary>
-/// <param name="options">Опции сервиса для отправки электронных писем</param>
+/// <inheritdoc cref="IEmailSendingService"/>
 public class EmailSendingService(EmailSendingServiceOptions options) : IEmailSendingService
 {
     /// <summary>

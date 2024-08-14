@@ -8,11 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Managing.Domain.Services;
 
-/// <summary>
-/// Сервис для работы с номерами отеля. Реализация IRoomService
-/// </summary>
-/// <param name="repository">Репозиторий номеров отеля</param>
-/// <param name="validator">Валидатор данных нового номера отеля</param>
+/// <inheritdoc cref="IRoomService"/>
 public class RoomService(IRoomsRepository repository, IValidator<RoomData> validator)
     : IRoomService
 {

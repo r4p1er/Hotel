@@ -5,10 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Managing.Infrastructure.Services;
 
-/// <summary>
-/// Репозиторий с номерами отеля. Реализация IRoomsRepository
-/// </summary>
-/// <param name="context">Контекст БД</param>
+/// <inheritdoc cref="IRoomsRepository"/>
 public class RoomsRepository(ApplicationContext context) : IRoomsRepository
 {
     /// <inheritdoc cref="IRoomsRepository.FindAll"/>
