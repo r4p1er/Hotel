@@ -9,4 +9,4 @@ FROM mcr.microsoft.com/dotnet/runtime:8.0
 
 WORKDIR /app
 COPY --from=build-env /app .
-ENTRYPOINT ["dotnet", "Notifications.Application.dll"]
+ENTRYPOINT ["dotnet", "Hotel.Notifications.Application.dll"]
