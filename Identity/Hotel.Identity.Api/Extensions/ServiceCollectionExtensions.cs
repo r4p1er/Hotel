@@ -1,10 +1,9 @@
 using System.Text;
-using Hotel.Shared.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace Hotel.Booking.Api;
+namespace Hotel.Identity.Api.Extensions;
 
 /// <summary>
 /// Расширения коллекции сервисов DI контейнера

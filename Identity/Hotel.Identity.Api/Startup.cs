@@ -1,3 +1,4 @@
+using Hotel.Identity.Api.Extensions;
 using Hotel.Shared.Middlewares;
 using Hotel.Identity.Domain;
 using Hotel.Identity.Domain.DataObjects;

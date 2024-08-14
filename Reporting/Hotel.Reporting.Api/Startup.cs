@@ -1,3 +1,4 @@
+using Hotel.Reporting.Api.Extensions;
 using Hotel.Shared.Middlewares;
 using Hotel.Reporting.Domain;
 using Hotel.Reporting.Infrastructure;

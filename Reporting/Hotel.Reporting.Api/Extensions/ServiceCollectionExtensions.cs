@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace Hotel.Managing.Api;
+namespace Hotel.Reporting.Api.Extensions;
 
 /// <summary>
 /// Расширения коллекции сервисов
@@ -11,7 +11,7 @@ namespace Hotel.Managing.Api;
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Добавить сервисы для работы swagger
+    /// Добавить сервисы для рбаоты swagger
     /// </summary>
     /// <param name="collection">Коллекция сервисов</param>
     /// <returns>Коллекция сервисов</returns>
