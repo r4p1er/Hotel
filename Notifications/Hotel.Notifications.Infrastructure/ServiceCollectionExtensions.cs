@@ -41,10 +41,10 @@ public static class ServiceCollectionExtensions
     /// <param name="options">Опции сервиса для отправки электронных писем</param>
     /// <returns>Коллекция сервисов</returns>
     public static IServiceCollection AddEmailSending(this IServiceCollection collection,
-        EmailSendingServiceOptions options)
+        EmailServiceOptions options)
     {
-        collection.AddSingleton<EmailSendingServiceOptions>(provider => options);
-        collection.AddScoped<IEmailSendingService, EmailSendingService>();
+        collection.AddSingleton<EmailServiceOptions>(provider => options);
+        collection.AddScoped<IEmailService, EmailService>();
 
         return collection;
     }

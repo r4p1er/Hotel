@@ -20,7 +20,7 @@ class Program
         builder.Services.AddNotifications(notificationOptions!);
 
         var sendingOptions = builder.Configuration.GetRequiredSection("Sending")
-            .Get<EmailSendingServiceOptions>();
+            .Get<EmailServiceOptions>();
         builder.Services.AddEmailSending(sendingOptions!);
 
         builder.Services.AddRabbitMq(builder.Configuration["RabbitOptions:Host"]!);

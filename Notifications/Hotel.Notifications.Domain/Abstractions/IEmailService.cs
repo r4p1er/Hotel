@@ -5,7 +5,7 @@ namespace Hotel.Notifications.Domain.Abstractions;
 /// <summary>
 /// Сервис для отправки электронных писем
 /// </summary>
-public interface IEmailSendingService
+public interface IEmailService
 {
     /// <summary>
     /// Отправить электронное письмо

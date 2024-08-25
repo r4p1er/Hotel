@@ -8,7 +8,7 @@ namespace Hotel.Notifications.Domain.Services;
 
 /// <inheritdoc cref="INotificationService"/>
 public class NotificationService(
-    IEmailSendingService emailSending, 
+    IEmailService email, 
     IRequestClient<SelectUserData> identityClient,
     IRequestClient<SelectRoomNames> managingClient,
     NotificationServiceOptions options) : INotificationService
@@ -63,7 +63,7 @@ public class NotificationService(
                 $"You have successfully created booking ticket. Room: {roomName}, from {publishedEvent.From} to {publishedEvent.To}, price: {publishedEvent.Price}. Booking ticket identifier: {publishedEvent.Id}"
         };
 
-        await emailSending.SendEmailAsync(message);
+        await email.SendEmailAsync(message);
     }
 
     /// <inheritdoc cref="INotificationService.TicketCancelNotify"/>
@@ -79,7 +79,7 @@ public class NotificationService(
                 $"Your booking ticket has been canceled. Room: {roomName}. Booking ticket identifier: {publishedEvent.Id}"
         };
 
-        await emailSending.SendEmailAsync(message);
+        await email.SendEmailAsync(message);
     }
 
     /// <inheritdoc cref="INotificationService.StatusChangeNotify"/>
@@ -96,6 +96,6 @@ public class NotificationService(
                 $"Confirmation status of the booking ticket changed: {statusString}. Room: {roomName}. Booking ticket identifier: {publishedEvent.Id}"
         };
 
-        await emailSending.SendEmailAsync(message);
+        await email.SendEmailAsync(message);
     }
 }

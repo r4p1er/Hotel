@@ -3,7 +3,7 @@ namespace Hotel.Notifications.Infrastructure.Models;
 /// <summary>
 /// Опции сервиса для отправки электронных писем
 /// </summary>
-public class EmailSendingServiceOptions
+public class EmailServiceOptions
 {
     /// <summary>
     /// Адрес электронной почты, с которго идет отправка
