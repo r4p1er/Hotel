@@ -30,9 +30,9 @@ public class TicketsController : ControllerBase
     /// <returns>Коллекция заявок на бронирование</returns>
     [HttpGet]
     [Authorize(Roles = "Manager, Admin, Service")]
-    public async Task<ActionResult<IEnumerable<Ticket>>> GetAll()
+    public async Task<IEnumerable<Ticket>> GetAll()
     {
-        return (await _ticketService.GetAll()).ToList();
+        return await _ticketService.GetAll();
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ public class TicketsController : ControllerBase
     /// <returns>Заявка на бронирование. Если запрещено - Forbid</returns>
     [HttpGet("{id}")]
     [Authorize]
-    public async Task<ActionResult<Ticket>> GetById(Guid id)
+    public async Task<Ticket> GetById(Guid id)
     {
         var ticket = await _ticketService.GetById(id);
 

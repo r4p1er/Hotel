@@ -19,9 +19,9 @@ public class ReportsController(IReportService reportService) : ControllerBase
     /// <returns>Коллекция с DTO отчетов</returns>
     [HttpGet]
     [Authorize(Roles = "Manager, Admin")]
-    public async Task<ActionResult<IEnumerable<ReportDTO>>> GetAll()
+    public async Task<IEnumerable<ReportDTO>> GetAll()
     {
-        return (await reportService.GetAll()).ToList();
+        return await reportService.GetAll();
     }
 
     /// <summary>
@@ -31,7 +31,7 @@ public class ReportsController(IReportService reportService) : ControllerBase
     /// <returns>DTO отчета</returns>
     [HttpGet("{id}")]
     [Authorize(Roles = "Manager, Admin")]
-    public async Task<ActionResult<ReportDTO>> GetById(Guid id)
+    public async Task<ReportDTO> GetById(Guid id)
     {
         return await reportService.GetById(id);
     }

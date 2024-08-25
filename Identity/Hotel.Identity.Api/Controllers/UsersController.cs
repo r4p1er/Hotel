@@ -36,9 +36,9 @@ public class UsersController(IUserService userService) : ControllerBase
     /// <returns>Коллекция пользователей</returns>
     [HttpGet]
     [Authorize(Roles = "Admin, Service")]
-    public async Task<ActionResult<IEnumerable<User>>> Search([FromQuery]QueryFiltersData filters)
+    public async Task<IEnumerable<User>> Search([FromQuery]QueryFiltersData filters)
     {
-        return (await userService.GetAll(filters)).ToList();
+        return await userService.GetAll(filters);
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ public class UsersController(IUserService userService) : ControllerBase
     /// <returns>Пользователь</returns>
     [HttpGet("{id}")]
     [Authorize(Roles = "Admin, Service")]
-    public async Task<ActionResult<User>> GetById(Guid id)
+    public async Task<User> GetById(Guid id)
     {
         var user = await userService.GetById(id);
 
@@ -61,7 +61,7 @@ public class UsersController(IUserService userService) : ControllerBase
     /// <returns>Пользователь</returns>
     [HttpGet("self")]
     [Authorize(Roles = "User, Manager, Admin")]
-    public async Task<ActionResult<User>> GetSelf()
+    public async Task<User> GetSelf()
     {
         var user = await userService.GetById(Guid.Parse(User.FindFirstValue("id")!));
 
