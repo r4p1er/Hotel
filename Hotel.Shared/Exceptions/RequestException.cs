@@ -7,7 +7,7 @@ namespace Hotel.Shared.Exceptions;
 /// </summary>
 /// <param name="statusCode">HTTP статус код</param>
 /// <param name="message">Сообщение исключения</param>
-public class RequestException(HttpStatusCode statusCode, string message) : Exception(message)
+public abstract class RequestException(HttpStatusCode statusCode, string message) : Exception(message)
 {
     /// <inheritdoc cref="HttpStatusCode"/>
     public HttpStatusCode StatusCode { get; set; } = statusCode;
